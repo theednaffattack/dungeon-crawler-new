@@ -4,5 +4,10 @@
   "main": "index.js",
   "repository": "https://github.com/theednaffattack/dungeon-crawler-new.git",
   "author": "Eddie Naff <eddie@eddienaff.dev>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5"
+  }
 }
