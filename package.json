@@ -1,0 +1,8 @@
+{
+  "name": "dungeon-crawler",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/theednaffattack/dungeon-crawler-new.git",
+  "author": "Eddie Naff <eddie@eddienaff.dev>",
+  "license": "MIT"
+}
