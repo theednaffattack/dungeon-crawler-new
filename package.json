@@ -7,8 +7,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "rimraf ./dist && tsc && ts-node ./scripts/move-index.ts",
-    "test-grid": "ts-node ./src/check-grid.ts"
+    "build": "rimraf ./dist && tsc && yarn pub-index",
+    "pub-index": "ts-node ./scripts/move-index.ts"
   },
   "devDependencies": {
     "fs-extra": "^10.0.0",
