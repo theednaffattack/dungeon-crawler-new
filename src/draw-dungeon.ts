@@ -13,7 +13,6 @@ const rows = store.dungeon.map((item, index) => {
     const cell = document.createElement("div");
 
     cell.className = "cell";
-    cell.textContent = `I am div # ${index}`;
     cell.style.opacity = `${opacity}`;
     return cell;
   });
