@@ -5,12 +5,15 @@
   "repository": "https://github.com/theednaffattack/dungeon-crawler-new.git",
   "author": "Eddie Naff <eddie@eddienaff.dev>",
   "license": "MIT",
+  "type": "module",
   "scripts": {
-    "build": "tsc",
-    "test-main": "node ./dist/main.js"
+    "build": "rimraf ./dist && tsc && ts-node ./scripts/move-index.ts",
+    "test-grid": "ts-node ./src/check-grid.ts"
   },
   "devDependencies": {
+    "fs-extra": "^10.0.0",
     "jest": "^27.5.1",
+    "rimraf": "^3.0.2",
     "ts-node": "^10.5.0",
     "typescript": "^4.5.5"
   }
