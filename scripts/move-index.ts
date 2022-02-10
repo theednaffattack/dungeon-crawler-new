@@ -5,5 +5,5 @@ const oldPath = resolve(__dirname, "../", "src/index.html");
 const newPath = resolve(__dirname, "../", "dist/index.html");
 
 fse.copyFile(oldPath, newPath, () =>
-  console.log("Moved lazy.js to 'dist/assets' directory", { oldPath, newPath })
+  console.log("Moved index.html to 'dist' directory", { oldPath, newPath })
 );
