@@ -6,18 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dungeon Crawler 2022</title>
     <style>
+      main {
+        display: flex;
+        justify-content: center;
+      }
       .cell {
-        background-color: #000;
-        height: 1em
-        width: 1em
-        border: 1px solid black
+        background-color: blue;
+        height: 1em;
+        width: 1em;
+        border: 1px solid black;
+      }
+      .cell:hover {
+        background-color: orange;
+      }
+      section #dungeon {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .row {
+        display: flex;
       }
     </style>
   </head>
   <body>
     <header>HEADER</header>
     <main>
-      MAIN
       <section>
         <div id="dungeon"></div>
       </section>
