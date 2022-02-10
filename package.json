@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "build": "rimraf ./dist && tsc && yarn pub-index",
-    "pub-index": "node --loader ts-node/esm ./scripts/move-index.ts"
+    "pub-index": "node ./scripts/move-index.js"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
