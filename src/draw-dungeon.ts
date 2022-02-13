@@ -1,10 +1,12 @@
-import { createDungeon } from "./main.js";
+import { createDungeon } from "./create-dungeon.js";
 
 let store = {
   dungeon: createDungeon(),
 };
 
-const rows = store.dungeon.map((item, index) => {
+// Take the dungeon 2d array and create a grid made
+// of divs.
+const rows = store.dungeon.grid.map((item, index) => {
   const row = document.createElement("div");
   row.className = `row`;
   row.id = `row-${index}`;
@@ -12,7 +14,7 @@ const rows = store.dungeon.map((item, index) => {
   const newCell = item.map(({ opacity, type }) => {
     const cell = document.createElement("div");
 
-    cell.className = "cell";
+    cell.className = type ? `cell ${type}` : "cell";
     cell.style.opacity = `${opacity}`;
     return cell;
   });
