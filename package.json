@@ -7,8 +7,9 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "rimraf ./dist && tsc && yarn pub-index",
-    "pub-index": "node ./scripts/move-index.js"
+    "build": "rimraf ./dist && tsc && yarn pub-index && yarn pub-favicon",
+    "pub-index": "node ./scripts/move-index.js",
+    "pub-favicon": "node ./scripts/move-favicon.js"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
