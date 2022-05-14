@@ -8,8 +8,6 @@ let store = {
 };
 
 function App() {
-  const [count, setCount] = useState(0);
-  console.log("VIEW THE STORE", store);
   return (
     <div className="App">
       <Dungeon store={store} />
