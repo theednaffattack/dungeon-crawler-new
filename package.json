@@ -7,7 +7,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "rimraf ./dist && tsc && yarn pub-index && yarn pub-favicon",
+    "build": "rimraf ./dist && tsc && pnpm pub-index && pnpm pub-favicon",
+    "serve": "npx http-server ./dist ",
     "pub-index": "node ./scripts/move-index.js",
     "pub-favicon": "node ./scripts/move-favicon.js"
   },
