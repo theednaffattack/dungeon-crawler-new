@@ -1,12 +1,17 @@
 import { createDungeon } from "./create-dungeon.js";
+import { createEntities } from "./create-entities.js";
 
-let store = {
-  dungeon: createDungeon(),
+let dungeon = createDungeon();
+
+let firstStore = {
+  dungeon: createEntities(dungeon),
 };
+
+let { entities, playerPosition } = createEntities(dungeon);
 
 // Take the dungeon 2d array and create a grid made
 // of divs.
-const rows = store.dungeon.grid.map((item, index) => {
+const rows = firstStore.dungeon.entities.grid.map((item, index) => {
   const row = document.createElement("div");
   row.className = `row`;
   row.id = `row-${index}`;
