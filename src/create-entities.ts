@@ -1,4 +1,5 @@
 import { GridAndRooms, gridSettings } from "./create-dungeon";
+import { Coords } from "./game-action";
 import { randomInteger } from "./util.random-number";
 
 export function createEntities(gameMap: GridAndRooms, level = 1) {
@@ -100,7 +101,7 @@ export function createEntities(gameMap: GridAndRooms, level = 1) {
   // 2. randomly place all the entities on to floor cells on the game map.
 
   // we'll need to return the players starting co-ordinates
-  let playerPosition: [number?, number?] = [];
+  let playerPosition: Coords = [0, 0];
 
   [potions, enemies, weapons, exits, players, bosses].forEach((entities) => {
     //The forEach() method executes a provided function once per array element.
