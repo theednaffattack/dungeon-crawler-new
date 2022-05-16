@@ -1,5 +1,4 @@
-import React from "react";
-import { createDungeon, GridAndRooms } from "../create-dungeon";
+import { StateViewer } from "./StateViewer";
 
 interface Entities {
   entities: GridAndRooms;
@@ -62,6 +61,7 @@ export default function Dungeon({
   });
   return (
     <div className="app">
+      <StateViewer data={state.playerPosition} />
       <div className="flex-container">{cells}</div>
     </div>
   );

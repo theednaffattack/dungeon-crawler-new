@@ -19,6 +19,15 @@
 .app {
   display: flex;
   justify-content: center;
+  position: relative;
+}
+
+.state-viewer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: beige;
+  border: 2px dashed limegreen;
 }
 
 .row {
