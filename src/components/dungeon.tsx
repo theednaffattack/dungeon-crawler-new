@@ -3,7 +3,7 @@ import { GridAndRooms, GridSquare } from "../create-dungeon";
 import { Coords } from "../game-action";
 import { useEventListener } from "../hooks.use-event-listener";
 import { gameReducer } from "./game-reducer";
-import { StateViewer } from "./StateViewer";
+import { StateViewer } from "./state-viewer";
 
 const action = {
   CHANGE_PLAYER_POSITION: "CHANGE_PLAYER_POSITION",
