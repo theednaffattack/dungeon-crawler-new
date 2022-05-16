@@ -12,7 +12,7 @@ export interface GridSettings {
 }
 
 export interface GridSquare {
-  type: "floor" | "door" | "enemy" | "weapon" | "exit" | "player" | 0;
+  type: "floor" | "door" | "enemy" | "weapon" | "exit" | "player" | "boss" | 0;
   id?: string;
   opacity?: number;
   distanceFromPlayer?: number;
