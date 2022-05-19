@@ -1,9 +1,9 @@
 :root {
   --background-color: #2d2d2d;
   --floor: #d6d1d1;
-  --enemy: #8ce114;
+  --enemy: #ff0000;
   --weapon: #f3f70c;
-  --potion: #ff0000;
+  --potion: hotpink;
   --player: #fc8d8d;
   --exit: #00b9f1;
   --boss: #c447e0;
@@ -16,18 +16,55 @@
   --color-primary-darkest: hsl(var(--color), calc(var(--l) - 10%));
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .app {
   display: flex;
   justify-content: center;
-  position: relative;
+}
+
+.push-right {
+  margin-right: auto;
+}
+.info-data {
+  padding-left: 3px;
 }
 
 .state-viewer {
-  position: absolute;
-  top: 0;
-  right: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.player-info {
+  display: flex;
   background-color: beige;
-  border: 2px dashed limegreen;
+  padding-top: 9px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.game-info {
+  display: flex;
+  background-color: beige;
+
+  justify-content: center;
+  align-items: center;
+}
+.info-icon-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.icon-box {
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .row {
@@ -39,11 +76,12 @@
 .flex-container {
   border: 1px solid rgba(0, 0, 0, 0.2);
   background-color: var(--background-color);
+  position: relative;
 }
 
 .cell {
-  height: 2em;
-  width: 2em;
+  height: 1em;
+  width: 1em;
   border: 1px solid #2d2d2d;
   background: #78d376;
 }

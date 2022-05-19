@@ -10,3 +10,6 @@
 - Game dev: https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps
 
 - https://developer.mozilla.org/en-US/docs/Games/Techniques/Tilemaps#scrolling_tilemaps
+
+Free SVGs
+https://www.svgrepo.com/

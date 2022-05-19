@@ -6,14 +6,12 @@ import { createEntities } from "./create-entities.js";
 
 let dungeon = createDungeon();
 
-let firstStore = {
-  entities: createEntities(dungeon),
-};
+let entities = createEntities(dungeon);
 
 function App() {
   return (
     <div className="App">
-      <Dungeon entities={firstStore.entities} />
+      <Dungeon entities={entities} playerHealth={50} />
     </div>
   );
 }

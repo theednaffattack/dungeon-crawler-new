@@ -11,6 +11,17 @@ export interface GridSettings {
   ROOM_SIZE_RANGE: [number, number];
 }
 
+export type EntityDesignation =
+  | 0
+  | "boss"
+  | "door"
+  | "enemy"
+  | "exit"
+  | "floor"
+  | "player"
+  | "potion"
+  | "weapon";
+
 export interface GridSquare {
   type: "floor" | "door" | "enemy" | "weapon" | "exit" | "player" | "boss" | 0;
   id?: string;

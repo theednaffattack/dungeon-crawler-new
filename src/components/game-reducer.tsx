@@ -1,4 +1,39 @@
-import { GameState, GameAction } from "./dungeon";
+import type { GridSquare, GridAndRooms } from "../create-dungeon";
+import type { HealthPotion, Weapon } from "../create-entities";
+
+export interface Entities {
+  entities: GridAndRooms;
+  playerPosition: Coords;
+}
+
+interface CreateLevelPayload {
+  entities: GridAndRooms["grid"];
+  playerPosition: Coords;
+}
+
+export type XCoord = number;
+export type YCoord = number;
+export type Coords = [XCoord, YCoord];
+
+export interface GameState {
+  dungeonLevel: number;
+  entities: Entities["entities"]["grid"];
+  playerPosition: Coords;
+  playerHealth: number;
+  playerInventory: {
+    potions: HealthPotion[];
+    weapons: Weapon[];
+  };
+}
+
+export type GameAction =
+  | {
+      type: "CHANGE_ENTITY";
+      payload: { entity: GridSquare; coords: Coords };
+    }
+  | { type: "CHANGE_PLAYER_POSITION"; payload: Coords }
+  | { type: "CREATE_LEVEL"; payload: CreateLevelPayload }
+  | { type: "SET_DUNGEON_LEVEL"; payload: number };
 
 export function gameReducer(
   state: GameState,
