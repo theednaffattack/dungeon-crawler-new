@@ -1,10 +1,12 @@
 import React, { useReducer } from "react";
 import { GridAndRooms } from "../create-dungeon";
+import { Weapon } from "../create-entities";
 import { Coords } from "../game-action";
 import { useEventListener } from "../hooks.use-event-listener";
 import Accordion from "./accordion";
-import { gameReducer } from "./game-reducer";
+import { gameReducer, GameActionEnum as GA } from "./game-reducer";
 import { PlayerInfo } from "./player-info";
+import { potionRegistry as pr } from "../../src/potion-registry";
 
 interface Entities {
   entities: GridAndRooms;
@@ -44,30 +46,51 @@ export default function Dungeon({
     const newPlayer = state.entities[y][x];
     const destination = state.entities[y + vectorY][x + vectorX]; // whats in the cell we're heading to
 
+    if (destination.type === "exit") {
+      dispatch({
+        type: GA.CREATE_LEVEL,
+      });
+    }
+
+    if (destination.type === "weapon") {
+      const { cost, damage, name, type } = destination as Weapon;
+      dispatch({
+        type: GA.PICKUP_ITEM,
+        payload: { cost, damage, name, type },
+      });
+    }
+
+    if (destination.type === "potion") {
+      const {
+        elixir: { cost, health, name, type },
+      } = pr;
+
+      dispatch({
+        type: GA.PICKUP_ITEM,
+        payload: { cost, health, name, type },
+      });
+    }
+
     if (
       destination.type &&
       destination.type !== "enemy" &&
+      destination.type !== "exit" &&
       destination.type !== "boss"
     ) {
-      /////////////////////////////here is the place where magic happens//////////////////////////////////
-
       dispatch({
-        type: "CHANGE_ENTITY",
+        type: GA.CHANGE_ENTITY,
         payload: { entity: { type: "floor" }, coords: [x, y] },
       });
 
       dispatch({
-        type: "CHANGE_ENTITY",
+        type: GA.CHANGE_ENTITY,
         payload: { entity: newPlayer, coords: newPosition },
       });
 
       dispatch({
-        type: "CHANGE_PLAYER_POSITION",
+        type: GA.CHANGE_PLAYER_POSITION,
         payload: newPosition,
       });
-      // store.dispatch(changeEntity({ type: "floor" }, [x, y]));
-      // store.dispatch(changeEntity(newPlayer, newPosition));
-      // store.dispatch(changePlayerPosition(newPosition));
     }
   }
 
@@ -100,23 +123,26 @@ export default function Dungeon({
 
   const [playerX, playerY] = state.playerPosition;
 
-  const what = state.entities.map((row, rowIndex) =>
+  const entitiesWithFog = state.entities.map((row, rowIndex) =>
     row.map((cell, cellIndex) => {
       //we create a new property on each cell that measures the distance from the player
 
       cell.distanceFromPlayer =
         Math.abs(playerY - rowIndex) + Math.abs(playerX - cellIndex);
 
+      const visible = 1;
+      const opaque = 0;
+
       //then we will check if distance is > 10 then set opacity to 0
-      cell.opacity = 1;
-      if (cell.distanceFromPlayer > 10) {
-        cell.opacity = 0;
+      cell.opacity = visible;
+      if ((cell.distanceFromPlayer = 10)) {
+        cell.opacity = visible;
       }
       return cell;
     })
   );
 
-  const cells = what.map((element, rowIndex) => {
+  const cells = entitiesWithFog.map((element, rowIndex) => {
     return (
       <div className="row" key={rowIndex}>
         {element.map((cell, cellIndex) => {
