@@ -5,13 +5,6 @@ import { useEventListener } from "../hooks.use-event-listener";
 import { gameReducer } from "./game-reducer";
 import { StateViewer } from "./state-viewer";
 
-const action = {
-  CHANGE_PLAYER_POSITION: "CHANGE_PLAYER_POSITION",
-  CHANGE_ENTITY: "CHANGE_ENTITY",
-  CREATE_LEVEL: "CREATE_LEVEL",
-  SET_DUNGEON_LEVEL: "SET_DUNGEON_LEVEL",
-};
-
 interface Entities {
   entities: GridAndRooms;
   playerPosition: Coords;
