@@ -1,5 +1,5 @@
-import type { GridSquare, GridAndRooms } from "../create-dungeon";
-import type { HealthPotion, Weapon } from "../create-entities";
+import { GridSquare, GridAndRooms, createDungeon } from "../create-dungeon";
+import { createEntities, HealthPotion, Weapon } from "../create-entities";
 
 export interface Entities {
   entities: GridAndRooms;
@@ -15,6 +15,16 @@ export type XCoord = number;
 export type YCoord = number;
 export type Coords = [XCoord, YCoord];
 
+export enum GameActionEnum {
+  CHANGE_ENTITY = "CHANGE_ENTITY",
+  CHANGE_PLAYER_POSITION = "CHANGE_PLAYER_POSITION",
+  CREATE_LEVEL = "CREATE_LEVEL",
+  SET_DUNGEON_LEVEL = "SET_DUNGEON_LEVEL",
+  PICKUP_WEAPON = "PICKUP_WEAPON",
+  PICKUP_HEALTH_POTION = "PICKUP_HEALTH_POTION",
+  PICKUP_ITEM = "PICKUP_ITEM",
+}
+
 export interface GameState {
   dungeonLevel: number;
   entities: Entities["entities"]["grid"];
@@ -28,19 +38,22 @@ export interface GameState {
 
 export type GameAction =
   | {
-      type: "CHANGE_ENTITY";
+      type: GameActionEnum.CHANGE_ENTITY;
       payload: { entity: GridSquare; coords: Coords };
     }
-  | { type: "CHANGE_PLAYER_POSITION"; payload: Coords }
-  | { type: "CREATE_LEVEL"; payload: CreateLevelPayload }
-  | { type: "SET_DUNGEON_LEVEL"; payload: number };
+  | { type: GameActionEnum.CHANGE_PLAYER_POSITION; payload: Coords }
+  | { type: GameActionEnum.CREATE_LEVEL; payload?: CreateLevelPayload }
+  | { type: GameActionEnum.SET_DUNGEON_LEVEL; payload: number }
+  | { type: GameActionEnum.PICKUP_WEAPON; payload: Weapon }
+  | { type: GameActionEnum.PICKUP_HEALTH_POTION; payload: HealthPotion }
+  | { type: GameActionEnum.PICKUP_ITEM; payload: HealthPotion | Weapon };
 
 export function gameReducer(
   state: GameState,
   { type, payload }: GameAction
 ): GameState {
   switch (type) {
-    case "CHANGE_ENTITY": {
+    case GameActionEnum.CHANGE_ENTITY: {
       // here we use the update function from 'react-addons-update' library
       //basicaly we are just creating an new object(updating) from  the entities array
       //and changing only the entities[y][x]
@@ -50,20 +63,66 @@ export function gameReducer(
       entitiesCopy[y][x] = payload.entity;
       return { ...state, entities: entitiesCopy };
     }
-    case "CHANGE_PLAYER_POSITION": {
+    case GameActionEnum.CHANGE_PLAYER_POSITION: {
       // when the user will press the 'up' key it will send an action to the Redux store
       // this action will have it's current coords, and starting from that we will
       //generate a new grid with the newly created player position
       return { ...state, playerPosition: payload };
     }
-    case "CREATE_LEVEL":
+    case GameActionEnum.CREATE_LEVEL: {
+      let dungeon = createDungeon();
+      let entities = createEntities(dungeon, state.dungeonLevel + 1);
+      console.log(GameActionEnum.CREATE_LEVEL, {
+        pos: entities.playerPosition,
+      });
       return {
         ...state,
-        playerPosition: payload.playerPosition,
-        entities: payload.entities,
+        playerPosition: entities.playerPosition,
+        entities: entities.entities.grid,
+        dungeonLevel: state.dungeonLevel + 1,
       };
+    }
 
-    case "SET_DUNGEON_LEVEL":
+    case GameActionEnum.PICKUP_ITEM: {
+      // If it's a weapon there should be properties
+      // for "cost" and "damage"
+      if ("cost" in payload && "damage" in payload) {
+        const { cost, damage, type, name } = payload;
+        return {
+          ...state,
+          playerInventory: {
+            ...state.playerInventory,
+            weapons: [
+              ...state.playerInventory.weapons,
+              {
+                cost,
+                damage,
+                type,
+                name,
+              },
+            ],
+          },
+        };
+      }
+      if ("health" in payload) {
+        const { cost, health, name, type } = payload;
+        return {
+          ...state,
+          playerInventory: {
+            ...state.playerInventory,
+            potions: [
+              ...state.playerInventory.potions,
+              { cost, health, name, type },
+            ],
+          },
+        };
+      }
+      // othewise...
+      console.error("PICKUP_ITEM:: This state should be impossible!");
+      return state;
+    }
+
+    case GameActionEnum.SET_DUNGEON_LEVEL:
       return { ...state, dungeonLevel: payload };
 
     default:

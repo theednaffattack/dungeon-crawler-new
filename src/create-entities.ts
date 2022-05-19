@@ -1,14 +1,23 @@
-import {
-  EntityDesignation,
-  GridAndRooms,
-  gridSettings,
-} from "./create-dungeon";
-import { Coords } from "./game-action";
+import { GridAndRooms, gridSettings } from "./create-dungeon";
+import { Coords } from "./components/game-reducer";
 import { randomInteger } from "./util.random-number";
+import { potionRegistry as pr } from "./potion-registry";
+import { weaponRegistry as wr } from "./weapon-registry";
 
 export interface EntityBase {
   type: EntityDesignation;
 }
+
+export type EntityDesignation =
+  | 0
+  | "boss"
+  | "door"
+  | "enemy"
+  | "exit"
+  | "floor"
+  | "player"
+  | "potion"
+  | "weapon";
 
 export type WeaponNames =
   | "Laser Pistol"
@@ -22,7 +31,7 @@ export type WeaponNames =
 
 export interface Character extends EntityBase {
   health: number;
-  level?: number;
+  level: number;
 }
 
 export interface Weapon extends EntityBase {
@@ -37,20 +46,11 @@ export interface HealthPotion extends EntityBase {
   cost: number;
 }
 
-export function createEntities(
-  gameMap: GridAndRooms,
-  level = 1,
-  playerHp: number = 50
-) {
-  if (!Number.isInteger(playerHp)) {
-    const errorMessage = "Error - Player HP should be an integer";
-    console.error(errorMessage);
-    throw new Error(errorMessage);
-  }
+export function createEntities(gameMap: GridAndRooms, level = 1) {
   //they are all arrays because we will use
   // pop() with an (while array has length > 0) loop
 
-  const bosses: any[] = [];
+  const bosses: Character[] = [];
   if (level === 4) {
     bosses.push({
       health: 400,
@@ -79,54 +79,33 @@ export function createEntities(
     });
   }
 
-  const players: Character[] = [
+  const players: EntityBase[] = [
     {
       type: "player",
-      health: playerHp,
     },
   ];
 
   const potions: HealthPotion[] = [];
   for (let i = 0; i < 5; i++) {
-    potions.push({ type: "potion", name: "elixir", cost: 0, health: 15 });
+    potions.push({
+      cost: pr.elixir.cost,
+      type: pr.elixir.type,
+      health: pr.elixir.health,
+      name: pr.elixir.name.toLowerCase(),
+    });
   }
 
-  const weaponTypes = [
-    {
-      name: "Laser Pistol",
-      damage: 15,
-    },
-    {
-      name: "Laser Rifle",
-      damage: 19,
-    },
-    {
-      name: "Plasma Pistol",
-      damage: 26,
-    },
-    {
-      name: "Plasma Rifle",
-      damage: 28,
-    },
-    {
-      name: "Electric ChainSaw",
-      damage: 31,
-    },
-    {
-      name: "Railgun",
-      damage: 33,
-    },
-    {
-      name: "Dark Energy Cannon",
-      damage: 40,
-    },
-    {
-      name: "B.F.G",
-      damage: 43,
-    },
+  const weaponTypes: Weapon[] = [
+    wr.bfg,
+    wr.darkEnergyCannon,
+    wr.electricChainsaw,
+    wr.laserPistol,
+    wr.laserRifle,
+    wr.plasmaRifle,
+    wr.railgun,
   ];
 
-  const weapons: any[] = [];
+  const weapons: Weapon[] = [];
   // weapon types will vary based on the level passed to the  createEntities function
   const qualifying = weaponTypes
     .filter((weapon) => weapon.damage < level * 10 + 10)
@@ -137,8 +116,10 @@ export function createEntities(
     //the Object.assign() method is used to copy the values from one or more source objects to a target object.
     //It will return the target object --> the target object is {}
 
-    const weapon: { type?: string; name: string; damage: number } =
-      Object.assign({}, qualifying[randomInteger(0, qualifying.length - 1)]);
+    const weapon: Weapon = Object.assign(
+      {},
+      qualifying[randomInteger(0, qualifying.length - 1)]
+    );
     weapon.type = "weapon";
     weapons.push(weapon);
   }
@@ -161,8 +142,12 @@ export function createEntities(
         if (entities[0].type === "player") {
           playerPosition = [x, y];
         }
-        //The pop() method removes the last element from an array and returns that element
-        gameMap.grid[y][x] = entities.pop();
+        // The pop() method removes the last element from an array
+        // and returns that element
+        const lastEntity = entities.pop();
+        if (lastEntity) {
+          gameMap.grid[y][x] = lastEntity;
+        }
       }
     }
   });
@@ -171,7 +156,6 @@ export function createEntities(
   //from one room to another using Redux actions
   for (let i = 0; i < gameMap.grid.length; i++) {
     for (let j = 0; j < gameMap.grid[0].length; j++) {
-      // console.log("WHAT IS THIS???", gameMap.grid[i][j]);
       if (gameMap.grid[i][j].type === "door") {
         gameMap.grid[i][j].type = "floor";
       }

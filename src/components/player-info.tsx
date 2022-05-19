@@ -46,6 +46,9 @@ export function PlayerInfo({
       </div>
       <div className="game-info">
         <p style={{ margin: 0 }}>Level: {dungeonLevel}</p>
+        <p style={{ margin: 0 }}>
+          Coords: {xCoord}, {yCoord}
+        </p>
       </div>
     </div>
   );
