@@ -1,9 +1,10 @@
 import React, { useReducer } from "react";
-import { GridAndRooms, GridSquare } from "../create-dungeon";
+import { GridAndRooms } from "../create-dungeon";
 import { Coords } from "../game-action";
 import { useEventListener } from "../hooks.use-event-listener";
+import Accordion from "./accordion";
 import { gameReducer } from "./game-reducer";
-import { StateViewer } from "./state-viewer";
+import { PlayerInfo } from "./player-info";
 
 interface Entities {
   entities: GridAndRooms;
@@ -12,30 +13,12 @@ interface Entities {
 
 interface DungeonProps {
   entities: Entities;
+  playerHealth: number;
 }
-
-export interface GameState {
-  dungeonLevel: number;
-  entities: Entities["entities"]["grid"];
-  playerPosition: Coords;
-}
-
-interface CreateLevelPayload {
-  entities: GridAndRooms["grid"];
-  playerPosition: Coords;
-}
-
-export type GameAction =
-  | {
-      type: "CHANGE_ENTITY";
-      payload: { entity: GridSquare; coords: Coords };
-    }
-  | { type: "CHANGE_PLAYER_POSITION"; payload: Coords }
-  | { type: "CREATE_LEVEL"; payload: CreateLevelPayload }
-  | { type: "SET_DUNGEON_LEVEL"; payload: number };
 
 export default function Dungeon({
   entities: { entities, playerPosition },
+  playerHealth,
 }: DungeonProps) {
   const PLAYER_MOVEMENT_KEYS = [
     "ArrowUp",
@@ -47,6 +30,8 @@ export default function Dungeon({
   const [state, dispatch] = useReducer(gameReducer, {
     entities: entities.grid,
     playerPosition,
+    playerHealth,
+    playerInventory: { potions: [], weapons: [] },
     dungeonLevel: 1,
   });
 
@@ -118,14 +103,7 @@ export default function Dungeon({
   const what = state.entities.map((row, rowIndex) =>
     row.map((cell, cellIndex) => {
       //we create a new property on each cell that measures the distance from the player
-      // let realPlayerX = 0;
-      // let realPlayerY = 0;
-      // if (playerX) {
-      //   realPlayerX = playerX;
-      // }
-      // if (playerY) {
-      //   realPlayerY = playerY;
-      // }
+
       cell.distanceFromPlayer =
         Math.abs(playerY - rowIndex) + Math.abs(playerX - cellIndex);
 
@@ -156,10 +134,27 @@ export default function Dungeon({
       </div>
     );
   });
+  const {
+    dungeonLevel,
+    entities: stateEntities,
+    playerHealth: hp,
+    playerInventory,
+    playerPosition: position,
+  } = state;
   return (
-    <div className="app">
-      <StateViewer data={state.playerPosition} />
-      <div className="flex-container">{cells}</div>
+    <div className="wrapper">
+      <div className="app">
+        <div className="flex-container">
+          <PlayerInfo
+            dungeonLevel={dungeonLevel}
+            entities={stateEntities}
+            playerPosition={position}
+            playerHealth={hp}
+            playerInventory={playerInventory}
+          />
+          {cells}
+        </div>
+      </div>
     </div>
   );
 }

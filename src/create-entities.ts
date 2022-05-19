@@ -1,8 +1,52 @@
-import { GridAndRooms, gridSettings } from "./create-dungeon";
+import {
+  EntityDesignation,
+  GridAndRooms,
+  gridSettings,
+} from "./create-dungeon";
 import { Coords } from "./game-action";
 import { randomInteger } from "./util.random-number";
 
-export function createEntities(gameMap: GridAndRooms, level = 1) {
+export interface EntityBase {
+  type: EntityDesignation;
+}
+
+export type WeaponNames =
+  | "Laser Pistol"
+  | "Laser Rifle"
+  | "Plasma Pistol"
+  | "Plasma Rifle"
+  | "Electric Chainsaw"
+  | "Railgun"
+  | "Dark Energy Cannon"
+  | "B.F.G";
+
+export interface Character extends EntityBase {
+  health: number;
+  level?: number;
+}
+
+export interface Weapon extends EntityBase {
+  damage: number;
+  name: WeaponNames;
+  cost: number;
+}
+
+export interface HealthPotion extends EntityBase {
+  health: number;
+  name: string;
+  cost: number;
+}
+
+export function createEntities(
+  gameMap: GridAndRooms,
+  level = 1,
+  playerHp: number = 50
+) {
+  if (!Number.isInteger(playerHp)) {
+    const errorMessage = "Error - Player HP should be an integer";
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
   //they are all arrays because we will use
   // pop() with an (while array has length > 0) loop
 
@@ -14,7 +58,7 @@ export function createEntities(gameMap: GridAndRooms, level = 1) {
       type: "boss",
     });
   }
-  const enemies: any[] = [];
+  const enemies: Character[] = [];
 
   for (let i = 0; i < 7; i++) {
     enemies.push({
@@ -28,22 +72,23 @@ export function createEntities(gameMap: GridAndRooms, level = 1) {
       type: "enemy",
     });
   }
-  const exits = [];
+  const exits: EntityBase[] = [];
   if (level < 4) {
     exits.push({
       type: "exit",
     });
   }
 
-  const players = [
+  const players: Character[] = [
     {
       type: "player",
+      health: playerHp,
     },
   ];
 
-  const potions = [];
+  const potions: HealthPotion[] = [];
   for (let i = 0; i < 5; i++) {
-    potions.push({ type: "potion" });
+    potions.push({ type: "potion", name: "elixir", cost: 0, health: 15 });
   }
 
   const weaponTypes = [
