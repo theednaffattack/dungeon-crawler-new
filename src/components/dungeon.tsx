@@ -135,8 +135,8 @@ export default function Dungeon({
 
       //then we will check if distance is > 10 then set opacity to 0
       cell.opacity = visible;
-      if ((cell.distanceFromPlayer = 10)) {
-        cell.opacity = visible;
+      if (cell.distanceFromPlayer > 10) {
+        cell.opacity = opaque;
       }
       return cell;
     })
