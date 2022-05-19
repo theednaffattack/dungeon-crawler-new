@@ -4,7 +4,8 @@ import { Weapon } from "../create-entities";
 import { Coords } from "../game-action";
 import { useEventListener } from "../hooks.use-event-listener";
 import Accordion from "./accordion";
-import { gameReducer, GameActionEnum as GA, FogState } from "./game-reducer";
+import { gameReducer, FogState } from "./game-reducer";
+import { GameActionEnum as GA } from "./GameActionEnum";
 import { PlayerInfo } from "./player-info";
 import { potionRegistry as pr } from "../../src/potion-registry";
 

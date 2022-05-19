@@ -1,5 +1,6 @@
 import { GridSquare, GridAndRooms, createDungeon } from "../create-dungeon";
 import { createEntities, HealthPotion, Weapon } from "../create-entities";
+import { GameActionEnum as GA } from "./GameActionEnum";
 
 export interface Entities {
   entities: GridAndRooms;
@@ -14,16 +15,6 @@ interface CreateLevelPayload {
 export type XCoord = number;
 export type YCoord = number;
 export type Coords = [XCoord, YCoord];
-
-export enum GameActionEnum {
-  CHANGE_ENTITY = "CHANGE_ENTITY",
-  CHANGE_PLAYER_POSITION = "CHANGE_PLAYER_POSITION",
-  CREATE_LEVEL = "CREATE_LEVEL",
-  SET_DUNGEON_LEVEL = "SET_DUNGEON_LEVEL",
-  PICKUP_WEAPON = "PICKUP_WEAPON",
-  PICKUP_HEALTH_POTION = "PICKUP_HEALTH_POTION",
-  PICKUP_ITEM = "PICKUP_ITEM",
-}
 
 export type FogState = "off" | "activated";
 
@@ -40,22 +31,22 @@ export interface GameState {
 
 export type GameAction =
   | {
-      type: GameActionEnum.CHANGE_ENTITY;
+      type: GA.CHANGE_ENTITY;
       payload: { entity: GridSquare; coords: Coords };
     }
-  | { type: GameActionEnum.CHANGE_PLAYER_POSITION; payload: Coords }
-  | { type: GameActionEnum.CREATE_LEVEL; payload?: CreateLevelPayload }
-  | { type: GameActionEnum.SET_DUNGEON_LEVEL; payload: number }
-  | { type: GameActionEnum.PICKUP_WEAPON; payload: Weapon }
-  | { type: GameActionEnum.PICKUP_HEALTH_POTION; payload: HealthPotion }
-  | { type: GameActionEnum.PICKUP_ITEM; payload: HealthPotion | Weapon };
+  | { type: GA.CHANGE_PLAYER_POSITION; payload: Coords }
+  | { type: GA.CREATE_LEVEL; payload?: CreateLevelPayload }
+  | { type: GA.SET_DUNGEON_LEVEL; payload: number }
+  | { type: GA.PICKUP_WEAPON; payload: Weapon }
+  | { type: GA.PICKUP_HEALTH_POTION; payload: HealthPotion }
+  | { type: GA.PICKUP_ITEM; payload: HealthPotion | Weapon };
 
 export function gameReducer(
   state: GameState,
   { type, payload }: GameAction
 ): GameState {
   switch (type) {
-    case GameActionEnum.CHANGE_ENTITY: {
+    case GA.CHANGE_ENTITY: {
       // here we use the update function from 'react-addons-update' library
       //basicaly we are just creating an new object(updating) from  the entities array
       //and changing only the entities[y][x]
@@ -65,16 +56,16 @@ export function gameReducer(
       entitiesCopy[y][x] = payload.entity;
       return { ...state, entities: entitiesCopy };
     }
-    case GameActionEnum.CHANGE_PLAYER_POSITION: {
+    case GA.CHANGE_PLAYER_POSITION: {
       // when the user will press the 'up' key it will send an action to the Redux store
       // this action will have it's current coords, and starting from that we will
       //generate a new grid with the newly created player position
       return { ...state, playerPosition: payload };
     }
-    case GameActionEnum.CREATE_LEVEL: {
+    case GA.CREATE_LEVEL: {
       let dungeon = createDungeon();
       let entities = createEntities(dungeon, state.dungeonLevel + 1);
-      console.log(GameActionEnum.CREATE_LEVEL, {
+      console.log(GA.CREATE_LEVEL, {
         pos: entities.playerPosition,
       });
       return {
@@ -85,7 +76,7 @@ export function gameReducer(
       };
     }
 
-    case GameActionEnum.PICKUP_ITEM: {
+    case GA.PICKUP_ITEM: {
       // If it's a weapon there should be properties
       // for "cost" and "damage"
       if ("cost" in payload && "damage" in payload) {
@@ -124,7 +115,7 @@ export function gameReducer(
       return state;
     }
 
-    case GameActionEnum.SET_DUNGEON_LEVEL:
+    case GA.SET_DUNGEON_LEVEL:
       return { ...state, dungeonLevel: payload };
 
     default:
