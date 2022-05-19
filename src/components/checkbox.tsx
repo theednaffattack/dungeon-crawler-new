@@ -6,7 +6,7 @@ export interface FogCheckboxProps {
   setFogState: React.Dispatch<React.SetStateAction<FogState>>;
 }
 
-export function Checkbox({ fogState, setFogState }: FogCheckboxProps) {
+export function FogCheckbox({ fogState, setFogState }: FogCheckboxProps) {
   // const [checked, setChecked] = useState(true);
 
   function handleChange() {

@@ -7,6 +7,7 @@
   --player: #fc8d8d;
   --exit: #00b9f1;
   --boss: #c447e0;
+  --info-bg: beige;
 
   --color: 0, 100%; /*the base color*/
   --l: 50%; /*the initial lightness*/
@@ -36,11 +37,12 @@
 .state-viewer {
   display: flex;
   flex-direction: column;
+  background-color: var(--info-bg);
 }
 
 .player-info {
   display: flex;
-  background-color: beige;
+  background-color: var(--info-bg);
   padding-top: 9px;
   padding-left: 6px;
   padding-right: 6px;
@@ -48,7 +50,7 @@
 
 .game-info {
   display: flex;
-  background-color: beige;
+  background-color: var(--info-bg);
 
   justify-content: center;
   align-items: center;

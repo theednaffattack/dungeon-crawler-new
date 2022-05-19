@@ -1,7 +1,7 @@
 import health from "../assets/health.svg";
 import potion2 from "../assets/potion-2.svg";
 import weapon from "../assets/weapon.svg";
-import { Checkbox, FogCheckboxProps } from "./checkbox";
+import { FogCheckbox, FogCheckboxProps } from "./checkbox";
 import { GameState } from "./game-reducer";
 
 type PlayerInfoState = GameState & FogCheckboxProps;
@@ -47,9 +47,7 @@ export function PlayerInfo({
       </div>
 
       <div className="game-controls">
-        <Checkbox fogState={fogState} setFogState={setFogState} />
-
-        <p style={{ margin: 0 }}>Level: {dungeonLevel}</p>
+        <FogCheckbox fogState={fogState} setFogState={setFogState} />
       </div>
       <div className="game-info">
         <p style={{ margin: 0 }}>Level: {dungeonLevel}</p>
