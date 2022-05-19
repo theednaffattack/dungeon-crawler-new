@@ -1,17 +1,18 @@
-import React from "react";
-import { GameState } from "./game-reducer";
 import health from "../assets/health.svg";
-import weapon from "../assets/weapon.svg";
 import potion2 from "../assets/potion-2.svg";
+import weapon from "../assets/weapon.svg";
+import { Checkbox, FogCheckboxProps } from "./checkbox";
+import { GameState } from "./game-reducer";
+
+type PlayerInfoState = GameState & FogCheckboxProps;
 
 export function PlayerInfo({
   playerHealth,
   dungeonLevel,
-  entities,
   playerInventory,
-  playerPosition,
-}: GameState) {
-  const [xCoord, yCoord] = playerPosition;
+  fogState,
+  setFogState,
+}: PlayerInfoState) {
   return (
     <div className="state-viewer">
       <div className="player-info">
@@ -44,11 +45,14 @@ export function PlayerInfo({
           <div className="info-data">{playerInventory.weapons.length}</div>
         </div>
       </div>
+
+      <div className="game-controls">
+        <Checkbox fogState={fogState} setFogState={setFogState} />
+
+        <p style={{ margin: 0 }}>Level: {dungeonLevel}</p>
+      </div>
       <div className="game-info">
         <p style={{ margin: 0 }}>Level: {dungeonLevel}</p>
-        <p style={{ margin: 0 }}>
-          Coords: {xCoord}, {yCoord}
-        </p>
       </div>
     </div>
   );

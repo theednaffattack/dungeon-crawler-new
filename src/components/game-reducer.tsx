@@ -25,6 +25,8 @@ export enum GameActionEnum {
   PICKUP_ITEM = "PICKUP_ITEM",
 }
 
+export type FogState = "off" | "activated";
+
 export interface GameState {
   dungeonLevel: number;
   entities: Entities["entities"]["grid"];

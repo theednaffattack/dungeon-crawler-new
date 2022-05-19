@@ -1,10 +1,10 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import { GridAndRooms } from "../create-dungeon";
 import { Weapon } from "../create-entities";
 import { Coords } from "../game-action";
 import { useEventListener } from "../hooks.use-event-listener";
 import Accordion from "./accordion";
-import { gameReducer, GameActionEnum as GA } from "./game-reducer";
+import { gameReducer, GameActionEnum as GA, FogState } from "./game-reducer";
 import { PlayerInfo } from "./player-info";
 import { potionRegistry as pr } from "../../src/potion-registry";
 
@@ -31,11 +31,14 @@ export default function Dungeon({
 
   const [state, dispatch] = useReducer(gameReducer, {
     entities: entities.grid,
+
     playerPosition,
     playerHealth,
     playerInventory: { potions: [], weapons: [] },
     dungeonLevel: 1,
   });
+
+  const [fogState, setFogState] = useState<FogState>("activated");
 
   function playerInput(vector: Coords) {
     const [x, y] = state.playerPosition; // get current location
@@ -135,7 +138,7 @@ export default function Dungeon({
 
       //then we will check if distance is > 10 then set opacity to 0
       cell.opacity = visible;
-      if (cell.distanceFromPlayer > 10) {
+      if (cell.distanceFromPlayer > 10 && fogState === "activated") {
         cell.opacity = opaque;
       }
       return cell;
@@ -177,6 +180,8 @@ export default function Dungeon({
             playerPosition={position}
             playerHealth={hp}
             playerInventory={playerInventory}
+            fogState={fogState}
+            setFogState={setFogState}
           />
           {cells}
         </div>
