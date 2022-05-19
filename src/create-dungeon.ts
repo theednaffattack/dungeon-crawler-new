@@ -1,3 +1,4 @@
+import { EntityBase, EntityDesignation } from "./create-entities.js";
 import { growMap } from "./grow-map.js";
 import { placeCells } from "./place-cells.js";
 import { randomInteger } from "./random-integer.js";
@@ -11,23 +12,14 @@ export interface GridSettings {
   ROOM_SIZE_RANGE: [number, number];
 }
 
-export type EntityDesignation =
-  | 0
-  | "boss"
-  | "door"
-  | "enemy"
-  | "exit"
-  | "floor"
-  | "player"
-  | "potion"
-  | "weapon";
-
 export interface GridSquare {
-  type: "floor" | "door" | "enemy" | "weapon" | "exit" | "player" | "boss" | 0;
+  type: EntityDesignation;
   id?: string;
   opacity?: number;
   distanceFromPlayer?: number;
 }
+
+interface NewGridSquare extends EntityBase {}
 
 export interface GridAndRooms {
   grid: GridSquare[][];
