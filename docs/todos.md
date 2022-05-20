@@ -1,6 +1,6 @@
 # Todos
 
-- [ ] create an Cell component and restore the opacity property using destination as an prop
+- [x] create an Cell component and restore the opacity property using destination as an prop
 - [x] create an reducer that takes care of the Player info and an initial state
 - [ ] create an action that gives Player hp
 - [ ] create an action that takes hp from Player
