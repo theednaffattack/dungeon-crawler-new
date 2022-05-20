@@ -27,7 +27,7 @@ export function FogCheckbox({ fogState, setFogState }: FogCheckboxProps) {
         onChange={handleChange}
         type="checkbox"
       />
-      Toggle Fog
+      {fogState === "off" ? "fog is off" : "fog is on"}
     </label>
   );
 }
