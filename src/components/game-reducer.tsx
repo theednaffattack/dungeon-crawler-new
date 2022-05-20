@@ -1,6 +1,6 @@
 import { GridSquare, GridAndRooms, createDungeon } from "../create-dungeon";
 import { createEntities, HealthPotion, Weapon } from "../create-entities";
-import { GameActionEnum as GA } from "./GameActionEnum";
+import { GameActionEnum as GA } from "../types";
 
 export interface Entities {
   entities: GridAndRooms;

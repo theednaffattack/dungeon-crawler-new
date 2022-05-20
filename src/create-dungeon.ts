@@ -12,8 +12,8 @@ export interface GridSettings {
   ROOM_SIZE_RANGE: [number, number];
 }
 
-export interface GridSquare {
-  type: EntityDesignation;
+export interface GridSquare extends EntityBase {
+  // type: EntityDesignation;
   id?: string;
   opacity?: number;
   distanceFromPlayer?: number;

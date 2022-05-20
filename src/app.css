@@ -58,6 +58,14 @@
   border: 3px red dashed;
 }
 
+.visible {
+  opacity: 0;
+}
+
+.opaque {
+  opacity: 1;
+}
+
 .player-info {
   display: flex;
   background-color: var(--info-bg);
