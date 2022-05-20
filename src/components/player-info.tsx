@@ -15,7 +15,7 @@ export function PlayerInfo({
 }: PlayerInfoState) {
   return (
     <div className="state-viewer">
-      <div className="player-info">
+      <div className="player-info push-right">
         {/* player health */}
         <div className="info-icon-wrapper">
           <div className="icon-box">
