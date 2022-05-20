@@ -1,0 +1,33 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+html {
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
+body {
+  box-sizing: border-box;
+}
+
+.full {
+  height: 100%;
+}
+
+.Grid {
+  border: 1px solid #d9dddd;
+}
+
+.GridItemEven,
+.GridItemOdd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.GridItemEven {
+  background-color: #f8f8f0;
+}
