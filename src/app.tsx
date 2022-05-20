@@ -10,7 +10,7 @@ let entities = createEntities(dungeon);
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
       <Dungeon entities={entities} playerHealth={50} />
     </div>
   );

@@ -8,6 +8,7 @@
   --exit: #00b9f1;
   --boss: #c447e0;
   --info-bg: beige;
+  --weapon-icon: blue;
 
   --color: 0, 100%; /*the base color*/
   --l: 50%; /*the initial lightness*/
@@ -17,9 +18,22 @@
   --color-primary-darkest: hsl(var(--color), calc(var(--l) - 10%));
 }
 
+.weapon-fill {
+  background-color: var(--weapon-icon);
+  -webkit-mask: url(../src/assets/weapon.svg) no-repeat center;
+  mask: url(../src/assets/weapon.svg) no-repeat center;
+}
+
+.heart-fill {
+  background-color: var(--enemy);
+  -webkit-mask: url(../src/assets/health.svg) no-repeat center;
+  mask: url(../src/assets/health.svg) no-repeat center;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
+  border: 5px orange dashed;
 }
 
 .app {
@@ -38,14 +52,15 @@
   display: flex;
   flex-direction: column;
   background-color: var(--info-bg);
+  border: 3px red dashed;
 }
 
 .player-info {
   display: flex;
   background-color: var(--info-bg);
-  padding-top: 9px;
+  /* padding-top: 9px;
   padding-left: 6px;
-  padding-right: 6px;
+  padding-right: 6px; */
 }
 
 .game-info {
@@ -79,6 +94,7 @@
   border: 1px solid rgba(0, 0, 0, 0.2);
   background-color: var(--background-color);
   position: relative;
+  border: 2px limegreen dashed;
 }
 
 .cell {
@@ -102,6 +118,12 @@
 .weapon {
   background: var(--weapon);
 }
+
+/* .weapon-fill {
+  background-color: var(--player);
+  -webkit-mask: url(/assets/weapon.svg) no-repeat center;
+  mask: url(/assets/weapon.svg) no-repeat center;
+} */
 
 .player {
   background: var(--player);

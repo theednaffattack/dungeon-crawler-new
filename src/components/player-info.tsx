@@ -17,9 +17,12 @@ export function PlayerInfo({
     <div className="state-viewer">
       <div className="player-info">
         {/* player health */}
-        <div className="info-icon-wrapper push-right">
+        <div className="info-icon-wrapper">
           <div className="icon-box">
-            <img src={health} width="30px" />
+            <div
+              className="heart-fill"
+              style={{ height: "30px", width: "30px" }}
+            ></div>
             <p style={{ fontSize: "12px", margin: 0, marginTop: "2px" }}>HP</p>
           </div>
           <div className="info-data">{playerHealth}</div>
@@ -37,7 +40,10 @@ export function PlayerInfo({
 
         <div className="info-icon-wrapper">
           <div className="icon-box">
-            <img src={weapon} width="30px" />
+            <div
+              className="weapon-fill"
+              style={{ width: "30px", height: "30px" }}
+            ></div>
             <p style={{ fontSize: "12px", margin: 0, marginTop: "2px" }}>
               Weapons
             </p>
