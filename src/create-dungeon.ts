@@ -19,8 +19,6 @@ export interface GridSquare {
   distanceFromPlayer?: number;
 }
 
-interface NewGridSquare extends EntityBase {}
-
 export interface GridAndRooms {
   grid: GridSquare[][];
   placedRooms: Room[];
