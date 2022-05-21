@@ -7,17 +7,9 @@ export interface FogCheckboxProps {
 }
 
 export function FogCheckbox({ fogState, setFogState }: FogCheckboxProps) {
-  // const [checked, setChecked] = useState(true);
-
   function handleChange() {
-    // setChecked(!checked);
     const newFogState = fogState === "off" ? "activated" : "off";
     setFogState(newFogState);
-    console.log("CHECKBOX ON CHANGE HANDLER", {
-      // checked,
-      fogState,
-      newFogState,
-    });
   }
 
   return (

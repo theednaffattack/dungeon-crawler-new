@@ -30,7 +30,7 @@ export default function Dungeon({
 
   const [state, dispatch] = useReducer(gameReducer, {
     entities: entities.grid,
-
+    equippedWeapon: null,
     playerPosition,
     playerHealth,
     playerInventory: { potions: [], weapons: [] },
@@ -84,6 +84,7 @@ export default function Dungeon({
 
           return (
             <Cell
+              key={`R:${rowIndex}-C:${cellIndex}`}
               column={cellIndex}
               distanceFromPlayer={cell.distanceFromPlayer}
               fogState={fogState}
@@ -105,6 +106,7 @@ export default function Dungeon({
   const {
     dungeonLevel,
     entities: stateEntities,
+    equippedWeapon,
     playerHealth: hp,
     playerInventory,
     playerPosition: position,
@@ -117,6 +119,7 @@ export default function Dungeon({
           <PlayerInfo
             dungeonLevel={dungeonLevel}
             entities={stateEntities}
+            equippedWeapon={equippedWeapon}
             playerPosition={position}
             playerHealth={hp}
             playerInventory={playerInventory}

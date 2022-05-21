@@ -2,6 +2,8 @@ import type { PropsWithChildren } from "react";
 import { useState } from "react";
 import "./accordion.css";
 
+// Adapted from: https://www.freecodecamp.org/news/build-accordion-menu-in-react-without-external-libraries/
+
 function Accordion({ children, title }: PropsWithChildren<{ title: string }>) {
   const [isActive, setIsActive] = useState(false);
 

@@ -1,21 +1,21 @@
-import health from "../assets/health.svg";
 import potion2 from "../assets/potion-2.svg";
-import weapon from "../assets/weapon.svg";
-import { FogCheckbox, FogCheckboxProps } from "./checkbox";
+import { FogCheckbox, FogCheckboxProps } from "./fog-checkbox";
+import { GameControls } from "./game-controls";
 import { GameState } from "./game-reducer";
 
 type PlayerInfoState = GameState & FogCheckboxProps;
 
 export function PlayerInfo({
-  playerHealth,
   dungeonLevel,
-  playerInventory,
+  equippedWeapon,
   fogState,
+  playerHealth,
+  playerInventory,
   setFogState,
 }: PlayerInfoState) {
   return (
     <div className="state-viewer">
-      <div className="player-info push-right">
+      <div className="player-info">
         {/* player health */}
         <div className="info-icon-wrapper">
           <div className="icon-box">
@@ -28,14 +28,24 @@ export function PlayerInfo({
           <div className="info-data">{playerHealth}</div>
         </div>
         {/* potion inventory */}
-        <div className="info-icon-wrapper">
-          <div className="icon-box">
-            <img src={potion2} width="30px" />
-            <p style={{ fontSize: "12px", margin: 0, marginTop: "2px" }}>
-              Potions
-            </p>
+        <div className="inventory">
+          <div className="info-icon-wrapper">
+            <div className="icon-box">
+              <img src={potion2} width="30px" />
+            </div>
+            <div className="info-data">{playerInventory.potions.length}</div>
           </div>
-          <div className="info-data">{playerInventory.potions.length}</div>
+
+          <p
+            style={{
+              fontSize: "12px",
+              margin: 0,
+              marginTop: "2px",
+              textAlign: "center",
+            }}
+          >
+            Potions
+          </p>
         </div>
 
         <div className="info-icon-wrapper">
@@ -52,9 +62,16 @@ export function PlayerInfo({
         </div>
       </div>
 
-      <div className="game-controls">
-        <FogCheckbox fogState={fogState} setFogState={setFogState} />
-      </div>
+      <GameControls>
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
+          <FogCheckbox fogState={fogState} setFogState={setFogState} />
+          <div>{equippedWeapon?.name}</div>
+        </div>
+      </GameControls>
       <div className="game-info">
         <p style={{ margin: 0 }}>Level: {dungeonLevel}</p>
       </div>

@@ -1,10 +1,8 @@
 import { GameAction, GameState } from "./components/game-reducer";
-import { GridSquare } from "./create-dungeon";
 import { Weapon } from "./create-entities";
 import { Coords } from "./game-action";
 import { potionRegistry as pr } from "./potion-registry";
 import { GameActionEnum as GA } from "./types";
-import type { GameActionEnum } from "./types";
 
 interface PlayerInputProps {
   dispatch: React.Dispatch<GameAction>;
@@ -43,6 +41,11 @@ export function playerInput({ dispatch, state, vector }: PlayerInputProps) {
     dispatch({
       type: GA.PICKUP_ITEM,
       payload: { cost, health, name, type },
+    });
+
+    dispatch({
+      type: GA.ADD_HP,
+      payload: health,
     });
   }
 

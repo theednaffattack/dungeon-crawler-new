@@ -1,4 +1,4 @@
-import { GridSquare, GridAndRooms, createDungeon } from "../create-dungeon";
+import { createDungeon, GridAndRooms, GridSquare } from "../create-dungeon";
 import { createEntities, HealthPotion, Weapon } from "../create-entities";
 import { GameActionEnum as GA } from "../types";
 
@@ -21,6 +21,7 @@ export type FogState = "off" | "activated";
 export interface GameState {
   dungeonLevel: number;
   entities: Entities["entities"]["grid"];
+  equippedWeapon: Weapon | null;
   playerPosition: Coords;
   playerHealth: number;
   playerInventory: {
@@ -31,11 +32,16 @@ export interface GameState {
 
 export type GameAction =
   | {
+      type: GA.ADD_HP;
+      payload: number;
+    }
+  | {
       type: GA.CHANGE_ENTITY;
       payload: { entity: GridSquare; coords: Coords };
     }
   | { type: GA.CHANGE_PLAYER_POSITION; payload: Coords }
   | { type: GA.CREATE_LEVEL; payload?: CreateLevelPayload }
+  | { type: GA.EQUIP_OR_APPLY_ITEM; payload: HealthPotion | Weapon }
   | { type: GA.SET_DUNGEON_LEVEL; payload: number }
   | { type: GA.PICKUP_WEAPON; payload: Weapon }
   | { type: GA.PICKUP_HEALTH_POTION; payload: HealthPotion }
@@ -46,6 +52,13 @@ export function gameReducer(
   { type, payload }: GameAction
 ): GameState {
   switch (type) {
+    case GA.ADD_HP: {
+      if (state.playerHealth > 49) {
+        return { ...state };
+      }
+
+      return { ...state, playerHealth: state.playerHealth + payload };
+    }
     case GA.CHANGE_ENTITY: {
       // here we use the update function from 'react-addons-update' library
       //basicaly we are just creating an new object(updating) from  the entities array
@@ -61,6 +74,35 @@ export function gameReducer(
       // this action will have it's current coords, and starting from that we will
       //generate a new grid with the newly created player position
       return { ...state, playerPosition: payload };
+    }
+
+    case GA.EQUIP_OR_APPLY_ITEM: {
+      const { playerHealth, playerInventory } = state;
+      if ("cost" in payload && "damage" in payload) {
+        return { ...state, equippedWeapon: payload };
+      }
+      // If we're consuming a potion...
+      if ("health" in payload) {
+        const newHp = playerHealth + payload.health;
+        const potionPosition = playerInventory.potions.findIndex(
+          (potion) => potion.name === "Elixir"
+        );
+
+        const newPotionsArray = playerInventory.potions.splice(
+          potionPosition,
+          1
+        );
+
+        return {
+          ...state,
+          playerHealth: newHp,
+          playerInventory: {
+            potions: [...newPotionsArray],
+            weapons: [...playerInventory.weapons],
+          },
+        };
+      }
+      return { ...state };
     }
     case GA.CREATE_LEVEL: {
       let dungeon = createDungeon();
@@ -97,6 +139,7 @@ export function gameReducer(
           },
         };
       }
+      // If we've picked up a potion
       if ("health" in payload) {
         const { cost, health, name, type } = payload;
         return {
