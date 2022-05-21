@@ -40,6 +40,7 @@ export type GameAction =
       payload: { entity: GridSquare; coords: Coords };
     }
   | { type: GA.CHANGE_PLAYER_POSITION; payload: Coords }
+  | { type: GA.DEDUCT_HP; payload: number }
   | { type: GA.CREATE_LEVEL; payload?: CreateLevelPayload }
   | { type: GA.EQUIP_OR_APPLY_ITEM; payload: HealthPotion | Weapon }
   | { type: GA.SET_DUNGEON_LEVEL; payload: number }
@@ -76,6 +77,22 @@ export function gameReducer(
       return { ...state, playerPosition: payload };
     }
 
+    case GA.CREATE_LEVEL: {
+      let dungeon = createDungeon();
+      let entities = createEntities(dungeon, state.dungeonLevel + 1);
+      console.log(GA.CREATE_LEVEL, {
+        pos: entities.playerPosition,
+      });
+      return {
+        ...state,
+        playerPosition: entities.playerPosition,
+        entities: entities.entities.grid,
+        dungeonLevel: state.dungeonLevel + 1,
+      };
+    }
+    case GA.DEDUCT_HP: {
+      return { ...state, playerHealth: state.playerHealth - payload };
+    }
     case GA.EQUIP_OR_APPLY_ITEM: {
       const { playerHealth, playerInventory } = state;
       if ("cost" in payload && "damage" in payload) {
@@ -103,19 +120,6 @@ export function gameReducer(
         };
       }
       return { ...state };
-    }
-    case GA.CREATE_LEVEL: {
-      let dungeon = createDungeon();
-      let entities = createEntities(dungeon, state.dungeonLevel + 1);
-      console.log(GA.CREATE_LEVEL, {
-        pos: entities.playerPosition,
-      });
-      return {
-        ...state,
-        playerPosition: entities.playerPosition,
-        entities: entities.entities.grid,
-        dungeonLevel: state.dungeonLevel + 1,
-      };
     }
 
     case GA.PICKUP_ITEM: {

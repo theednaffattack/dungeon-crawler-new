@@ -18,11 +18,20 @@ export function playerInput({ dispatch, state, vector }: PlayerInputProps) {
 
   const newPlayer = state.entities[y][x];
   const destination = state.entities[y + vectorY][x + vectorX]; // whats in the cell we're heading to
+  const enemyDamage = 5;
 
   if (destination.type === "exit") {
     dispatch({
       type: GA.CREATE_LEVEL,
     });
+  }
+
+  if (destination.type === "enemy") {
+    dispatch({ type: GA.DEDUCT_HP, payload: enemyDamage });
+  }
+
+  if (destination.type === "boss") {
+    dispatch({ type: GA.DEDUCT_HP, payload: enemyDamage * 2 });
   }
 
   if (destination.type === "weapon") {
