@@ -8,10 +8,7 @@ body {
 
 .accordion {
   max-width: 600px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
+
   /* margin: 2rem auto; */
 }
 
@@ -22,12 +19,10 @@ body {
   cursor: pointer;
   background-color: #21aeca;
   font-size: 20px;
-  opacity: 0.2;
 }
 
 .accordion-title:hover {
   background-color: #3ab4cc;
-  opacity: 1;
 }
 
 .accordion-title,
@@ -38,5 +33,4 @@ body {
 .accordion-content {
   background-color: #39b9d2;
   font-size: 20px;
-  opacity: 0.2;
 }
