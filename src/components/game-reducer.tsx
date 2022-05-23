@@ -32,15 +32,16 @@ export interface GameState {
 
 export type GameAction =
   | {
-      type: GA.ADD_HP;
+      type: GA.ADD_HP_TO_PLAYER;
       payload: number;
     }
+  | { type: GA.ATTACK_ENEMY; payload: { damage: number; enemyCoords: Coords } }
   | {
       type: GA.CHANGE_ENTITY;
       payload: { entity: GridSquare; coords: Coords };
     }
   | { type: GA.CHANGE_PLAYER_POSITION; payload: Coords }
-  | { type: GA.DEDUCT_HP; payload: number }
+  | { type: GA.DEDUCT_HP_FROM_PLAYER; payload: number }
   | { type: GA.CREATE_LEVEL; payload?: CreateLevelPayload }
   | { type: GA.EQUIP_OR_APPLY_ITEM; payload: HealthPotion | Weapon }
   | { type: GA.SET_DUNGEON_LEVEL; payload: number }
@@ -53,12 +54,16 @@ export function gameReducer(
   { type, payload }: GameAction
 ): GameState {
   switch (type) {
-    case GA.ADD_HP: {
+    case GA.ADD_HP_TO_PLAYER: {
       if (state.playerHealth > 49) {
         return { ...state };
       }
 
       return { ...state, playerHealth: state.playerHealth + payload };
+    }
+    case GA.ATTACK_ENEMY: {
+      const { damage, enemyCoords } = payload;
+      return { ...state };
     }
     case GA.CHANGE_ENTITY: {
       // here we use the update function from 'react-addons-update' library
@@ -90,7 +95,7 @@ export function gameReducer(
         dungeonLevel: state.dungeonLevel + 1,
       };
     }
-    case GA.DEDUCT_HP: {
+    case GA.DEDUCT_HP_FROM_PLAYER: {
       return { ...state, playerHealth: state.playerHealth - payload };
     }
     case GA.EQUIP_OR_APPLY_ITEM: {
