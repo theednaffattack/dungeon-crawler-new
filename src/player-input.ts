@@ -27,11 +27,11 @@ export function playerInput({ dispatch, state, vector }: PlayerInputProps) {
   }
 
   if (destination.type === "enemy") {
-    dispatch({ type: GA.DEDUCT_HP, payload: enemyDamage });
+    dispatch({ type: GA.DEDUCT_HP_FROM_PLAYER, payload: enemyDamage });
   }
 
   if (destination.type === "boss") {
-    dispatch({ type: GA.DEDUCT_HP, payload: enemyDamage * 2 });
+    dispatch({ type: GA.DEDUCT_HP_FROM_PLAYER, payload: enemyDamage * 2 });
   }
 
   if (destination.type === "weapon") {
@@ -53,7 +53,7 @@ export function playerInput({ dispatch, state, vector }: PlayerInputProps) {
     });
 
     dispatch({
-      type: GA.ADD_HP,
+      type: GA.ADD_HP_TO_PLAYER,
       payload: health,
     });
   }

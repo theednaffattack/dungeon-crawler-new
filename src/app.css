@@ -42,6 +42,10 @@
   display: flex;
   justify-content: center;
 }
+.logic-grid-app {
+  display: grid;
+  grid-template-rows: auto auto;
+}
 
 .push-right {
   margin-right: auto;

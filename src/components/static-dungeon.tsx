@@ -5,6 +5,7 @@ import { useEventListener } from "../hooks.use-event-listener";
 import { playerInput } from "../player-input";
 import { Cell } from "./cell";
 import { FogState, gameReducer } from "./game-reducer";
+import { Nav } from "./nav";
 import { PlayerInfo } from "./player-info";
 
 interface Entities {
@@ -12,12 +13,12 @@ interface Entities {
   playerPosition: Coords;
 }
 
-interface DungeonProps {
+export interface DungeonProps {
   entities: Entities;
   playerHealth: number;
 }
 
-export default function Dungeon({
+export default function StaticDungeon({
   entities: { entities, playerPosition },
   playerHealth,
 }: DungeonProps) {
@@ -114,6 +115,7 @@ export default function Dungeon({
 
   return (
     <div className="wrapper">
+      <Nav />
       <div className="app">
         <div className="flex-container">
           <PlayerInfo
