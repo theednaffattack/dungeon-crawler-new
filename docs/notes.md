@@ -13,3 +13,7 @@
 
 Free SVGs
 https://www.svgrepo.com/
+
+## Pacman
+
+Using React w/ canvas: https://medium.com/@pdx.lucasm/canvas-with-react-js-32e133c05258
