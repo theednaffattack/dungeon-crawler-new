@@ -6,6 +6,7 @@ import StaticDungeon from "./components/static-dungeon";
 import { createDungeon } from "./create-dungeon";
 import { createEntities } from "./create-entities";
 import "./index.css";
+import { Pacman } from "./pacman/pacman";
 
 let dungeon = createDungeon();
 
@@ -29,6 +30,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           </Route>
           */}
         </Route>
+
+        <Route path="pacman" element={<Pacman />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
