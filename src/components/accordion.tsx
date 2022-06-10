@@ -1,10 +1,15 @@
 import type { PropsWithChildren } from "react";
 import { useState } from "react";
+import { AccordionData } from "./accordion-section";
 import "./accordion.css";
 
 // Adapted from: https://www.freecodecamp.org/news/build-accordion-menu-in-react-without-external-libraries/
 
-function Accordion({ children, title }: PropsWithChildren<{ title: string }>) {
+function Accordion({
+  children,
+  content,
+  title,
+}: PropsWithChildren<AccordionData>) {
   const [isActive, setIsActive] = useState(false);
 
   return (
@@ -14,7 +19,11 @@ function Accordion({ children, title }: PropsWithChildren<{ title: string }>) {
           <div>{title}</div>
           <div>{isActive ? "-" : "+"}</div>
         </div>
-        {isActive && <div className="accordion-content">{children}</div>}
+        {isActive && (
+          <div className="accordion-content">
+            {content ? content : children}
+          </div>
+        )}
       </div>
     </div>
   );

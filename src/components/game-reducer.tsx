@@ -85,9 +85,7 @@ export function gameReducer(
     case GA.CREATE_LEVEL: {
       let dungeon = createDungeon();
       let entities = createEntities(dungeon, state.dungeonLevel + 1);
-      console.log(GA.CREATE_LEVEL, {
-        pos: entities.playerPosition,
-      });
+
       return {
         ...state,
         playerPosition: entities.playerPosition,
