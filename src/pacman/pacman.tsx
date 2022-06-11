@@ -3,6 +3,7 @@ import { drawMap } from "./draw-map";
 import { drawPlayer } from "./draw-player";
 import { tileMap } from "./tile-map";
 import { GameStateInterface } from "./types";
+import "./style.css";
 
 type Action = { type: "init"; payload: GameStateInterface };
 
@@ -27,6 +28,8 @@ function reducer(
 export const tileSize = 40;
 export function Pacman() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -61,6 +64,21 @@ export function Pacman() {
   return (
     <div className="pacman-container">
       <canvas ref={canvasRef}></canvas>
+      <div>
+        <h1>STATE VIEWER</h1>
+        <p className="state">
+          ArrowDown: {state.keyPressed.ArrowDown.toString()}
+        </p>
+        <p className="state">ArrowUp: {state.keyPressed.ArrowUp.toString()}</p>
+        <p className="state">
+          ArrowLeft: {state.keyPressed.ArrowLeft.toString()}
+        </p>
+        <p className="state">
+          ArrowRight: {state.keyPressed.ArrowRight.toString()}
+        </p>
+        <p className="state">Player X: {state.player.position.x}</p>
+        <p className="state">Player Y: {state.player.position.y}</p>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,7 @@
+.pacman-container {
+  display: flex;
+}
+
+.state {
+  font-size: large;
+}
