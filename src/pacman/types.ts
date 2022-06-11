@@ -1,6 +1,12 @@
 export interface GameStateInterface {
   map: Tile[][];
   player: { position: { x: number; y: number }; radius: number };
+  keyPressed: {
+    ArrowUp: boolean;
+    ArrowDown: boolean;
+    ArrowLeft: boolean;
+    ArrowRight: boolean;
+  };
 }
 
 export interface Tile {

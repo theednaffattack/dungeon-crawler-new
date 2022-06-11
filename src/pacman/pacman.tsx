@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import { drawMap } from "./draw-map";
 import { drawPlayer } from "./draw-player";
 import { tileMap } from "./tile-map";
