@@ -10,6 +10,12 @@ type Action = { type: "init"; payload: GameStateInterface };
 const initialState: GameStateInterface = {
   map: tileMap,
   player: { position: { x: 0, y: 0 }, radius: 15 },
+  keyPressed: {
+    ArrowUp: false,
+    ArrowDown: false,
+    ArrowLeft: false,
+    ArrowRight: false,
+  },
 };
 
 function reducer(
