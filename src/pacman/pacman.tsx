@@ -4,6 +4,8 @@ import { drawPlayer } from "./draw-player";
 import { tileMap } from "./tile-map";
 import { GameStateInterface } from "./types";
 import "./style.css";
+import { StateViewer } from "./state-viewer";
+import { Nav } from "../components/nav";
 
 type Action = { type: "init"; payload: GameStateInterface };
 
@@ -68,22 +70,12 @@ export function Pacman() {
   }, [drawMap]);
 
   return (
-    <div className="pacman-container">
-      <canvas ref={canvasRef}></canvas>
-      <div>
-        <h1>STATE VIEWER</h1>
-        <p className="state">
-          ArrowDown: {state.keyPressed.ArrowDown.toString()}
-        </p>
-        <p className="state">ArrowUp: {state.keyPressed.ArrowUp.toString()}</p>
-        <p className="state">
-          ArrowLeft: {state.keyPressed.ArrowLeft.toString()}
-        </p>
-        <p className="state">
-          ArrowRight: {state.keyPressed.ArrowRight.toString()}
-        </p>
-        <p className="state">Player X: {state.player.position.x}</p>
-        <p className="state">Player Y: {state.player.position.y}</p>
+    <div className="pacman-wrap">
+      <Nav />
+      <h1>PACMAN</h1>
+      <div className="pacman-container">
+        <canvas ref={canvasRef}></canvas>
+        <StateViewer state={state} />
       </div>
     </div>
   );
