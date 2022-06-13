@@ -1,6 +1,18 @@
+export interface Player {
+  position: { x: number; y: number };
+  radius: number;
+  velocity: { x: number; y: number };
+}
+
 export interface GameStateInterface {
+  keyPressed: {
+    ArrowUp: boolean;
+    ArrowDown: boolean;
+    ArrowLeft: boolean;
+    ArrowRight: boolean;
+  };
   map: Tile[][];
-  player: { position: { x: number; y: number }; radius: number };
+  player: Player;
 }
 
 export interface Tile {
@@ -8,6 +20,8 @@ export interface Tile {
   y: number;
   type: TileType;
   image: HTMLImageElement;
+  height: number;
+  width: number;
 }
 
 type TileType =

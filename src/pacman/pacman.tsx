@@ -1,66 +1,93 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
+import { Nav } from "../components/nav";
+import { useEventListener } from "../hooks.use-event-listener";
 import { drawMap } from "./draw-map";
 import { drawPlayer } from "./draw-player";
+import { handleKeydown } from "./handle-keydown";
+import { handleKeyup } from "./handle-keyup";
+import { pacmanReducer } from "./pacman-reducer";
+import { StateViewer } from "./state-viewer";
+import "./style.css";
 import { tileMap } from "./tile-map";
 import { GameStateInterface } from "./types";
 
-type Action = { type: "init"; payload: GameStateInterface };
-
-const initialState: GameStateInterface = {
+export const initialState: GameStateInterface = {
   map: tileMap,
-  player: { position: { x: 0, y: 0 }, radius: 15 },
+  player: { position: { x: 1, y: 1 }, radius: 15, velocity: { x: 0, y: 0 } },
+  keyPressed: {
+    ArrowUp: false,
+    ArrowDown: false,
+    ArrowLeft: false,
+    ArrowRight: false,
+  },
 };
 
-function reducer(
-  state: GameStateInterface,
-  action: Action
-): GameStateInterface {
-  switch (action.type) {
-    case "init":
-      return { ...state };
-
-    default:
-      return initialState;
-  }
-}
-
-export const tileSize = 40;
-export function Pacman() {
+export function Canvas(props: any) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const previousTimeRef = useRef<number>(0);
+
+  const [deltaTime, setDeltaTime] = useState<number>(0);
+
+  const [state, dispatch] = useReducer(pacmanReducer, initialState);
+
+  useEventListener("keydown", (evt) => handleKeydown(evt, dispatch, deltaTime));
+  useEventListener("keyup", (evt) => handleKeyup(evt, dispatch));
+
+  function draw(ctx: CanvasRenderingContext2D, frameDeltaInSeconds: number) {
+    const speed = 4;
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.fillStyle = "#000000";
+    ctx.beginPath();
+    ctx.arc(
+      50,
+      100,
+      20 * Math.sin(frameDeltaInSeconds * speed) ** 2,
+      0,
+      2 * Math.PI
+    );
+    ctx.fill();
+  }
 
   useEffect(() => {
-    if (canvasRef.current) {
-      const canvas = canvasRef.current;
-      const context = canvas.getContext("2d");
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d");
+    let frameCount = 0;
+    let animationFrameId: number;
 
-      let frameCount = 0;
-      let animationFrameId: number;
-
-      //Our draw came here
-      function render() {
-        if (context) {
-          canvas.width = tileSize * 11;
-          canvas.height = tileSize * 13;
-          frameCount++;
-          drawMap(context, frameCount);
-          drawPlayer(context);
-          animationFrameId = window.requestAnimationFrame(render);
-        }
+    //Our draw came here
+    function render(time?: number) {
+      if (context != null && time) {
+        const calcDeltaTime = time && time - previousTimeRef.current;
+        setDeltaTime(calcDeltaTime);
+        // frameCount++;
+        previousTimeRef.current = time;
+        drawMap(context);
+        drawPlayer(context, state, calcDeltaTime);
+        // draw(context, deltaTime / 1000);
       }
-
-      if (context) {
-        render();
-      }
-
-      return () => {
-        window.cancelAnimationFrame(animationFrameId);
-      };
+      animationFrameId = window.requestAnimationFrame(render);
     }
-  }, [drawMap]);
+
+    // Call our render function
+    render();
+
+    return () => {
+      window.cancelAnimationFrame(animationFrameId);
+    };
+  }, [draw]);
 
   return (
-    <div className="pacman-container">
-      <canvas ref={canvasRef}></canvas>
+    <div className="pacman-wrap">
+      <Nav />
+      <h1>PACMAN</h1>
+
+      <div className="pacman-container">
+        <canvas height={600} width={600} ref={canvasRef} {...props} />
+
+        <StateViewer state={state} />
+      </div>
     </div>
   );
 }
+
+export default Canvas;
