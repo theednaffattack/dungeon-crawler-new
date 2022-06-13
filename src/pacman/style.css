@@ -14,3 +14,12 @@
 .state {
   font-size: large;
 }
+
+.state span {
+  color: orangered;
+  font-weight: bold;
+}
+
+.state-viewer {
+  padding: 12px;
+}

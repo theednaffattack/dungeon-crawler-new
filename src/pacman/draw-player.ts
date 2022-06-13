@@ -1,12 +1,32 @@
-import { tileSize } from "./pacman";
+import { tileSize } from "./tile-map";
+import { GameStateInterface } from "./types";
 
-export function drawPlayer(context: CanvasRenderingContext2D) {
-  const playerInfo = { position: { x: 1, y: 1 }, radius: 15 };
+export function drawPlayer(
+  context: CanvasRenderingContext2D,
+  state: GameStateInterface,
+  deltaTime: number
+) {
+  let vectorX = 0;
+  let vectorY = 0;
+  if (state.keyPressed.ArrowLeft) {
+    vectorX = -1;
+  }
+  if (state.keyPressed.ArrowRight) {
+    vectorX = 1;
+  }
+  if (state.keyPressed.ArrowUp) {
+    vectorY = -1;
+  }
+  if (state.keyPressed.ArrowDown) {
+    vectorY = 1;
+  }
+
   context.beginPath();
+
   context.arc(
-    playerInfo.position.x * tileSize + tileSize / 2,
-    playerInfo.position.y * tileSize + tileSize / 2,
-    playerInfo.radius,
+    state.player.position.x * tileSize + tileSize / 2,
+    state.player.position.y * tileSize + tileSize / 2,
+    state.player.radius,
     0,
     Math.PI * 2
   );

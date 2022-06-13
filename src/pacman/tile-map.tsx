@@ -1,144 +1,7 @@
 import { createImage } from "./create-image";
 import { GameMapEntities, Tile } from "./types";
 
-export const tileMapOG: Tile[][] = [
-  [
-    {
-      x: 0,
-      y: 0,
-      type: "left-corner",
-      image: createImage("./assets/pacman/pipeCorner1.png"),
-    },
-    {
-      x: 1,
-      y: 0,
-      type: "pipe-horizontal",
-      image: createImage("./assets/pacman/pipeHorizontal.png"),
-    },
-    {
-      x: 2,
-      y: 0,
-      type: "pipe-horizontal",
-      image: createImage("./assets/pacman/pipeHorizontal.png"),
-    },
-    {
-      x: 3,
-      y: 0,
-      type: "pipe-horizontal",
-      image: createImage("./assets/pacman/pipeHorizontal.png"),
-    },
-    {
-      x: 4,
-      y: 0,
-      type: "pipe-horizontal",
-      image: createImage("./assets/pacman/pipeHorizontal.png"),
-    },
-    {
-      x: 5,
-      y: 0,
-      type: "pipe-horizontal",
-      image: createImage("./assets/pacman/pipeHorizontal.png"),
-    },
-    {
-      x: 6,
-      y: 0,
-      type: "pipe-horizontal",
-      image: createImage("./assets/pacman/pipeHorizontal.png"),
-    },
-    {
-      x: 7,
-      y: 0,
-      type: "pipe-horizontal",
-      image: createImage("./assets/pacman/pipeHorizontal.png"),
-    },
-    {
-      x: 8,
-      y: 0,
-      type: "pipe-horizontal",
-      image: createImage("./assets/pacman/pipeHorizontal.png"),
-    },
-    {
-      x: 9,
-      y: 0,
-      type: "pipe-horizontal",
-      image: createImage("./assets/pacman/pipeHorizontal.png"),
-    },
-    {
-      x: 10,
-      y: 0,
-      type: "right-corner",
-      image: createImage("./assets/pacman/pipeCorner2.png"),
-    },
-  ],
-  [
-    {
-      x: 0,
-      y: 1,
-      type: "left-edge",
-      image: createImage("./assets/pacman/pipeVertical.png"),
-    },
-    {
-      x: 1,
-      y: 1,
-      type: "pellet",
-      image: createImage("./assets/pacman/block.png"),
-    },
-    {
-      x: 2,
-      y: 1,
-      type: "pellet",
-      image: createImage("./assets/pacman/block.png"),
-    },
-    {
-      x: 3,
-      y: 1,
-      type: "pellet",
-      image: createImage("./assets/pacman/block.png"),
-    },
-    {
-      x: 4,
-      y: 1,
-      type: "pellet",
-      image: createImage("./assets/pacman/block.png"),
-    },
-    {
-      x: 5,
-      y: 1,
-      type: "pellet",
-      image: createImage("./assets/pacman/block.png"),
-    },
-    {
-      x: 6,
-      y: 1,
-      type: "pellet",
-      image: createImage("./assets/pacman/block.png"),
-    },
-    {
-      x: 7,
-      y: 1,
-      type: "pellet",
-      image: createImage("./assets/pacman/block.png"),
-    },
-    {
-      x: 8,
-      y: 1,
-      type: "pellet",
-      image: createImage("./assets/pacman/block.png"),
-    },
-    {
-      x: 9,
-      y: 1,
-      type: "pellet",
-      image: createImage("./assets/pacman/block.png"),
-    },
-    {
-      x: 10,
-      y: 1,
-      type: "right-edge",
-      image: createImage("./assets/pacman/pipeVertical.png"),
-    },
-  ],
-];
+export const tileSize = 40;
 export const gameMap: GameMapEntities[] = [
   ["1", "-", "-", "-", "-", "-", "-", "-", "-", "-", "2"],
   ["|", ".", ".", ".", ".", ".", ".", ".", ".", ".", "|"],
@@ -164,6 +27,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "pipe-cross",
           image: createImage("./assets/pacman/pipeVertical.png"),
+          height: tileSize,
+          width: tileSize,
         };
       case "-":
         return {
@@ -171,6 +36,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "pipe-cross",
           image: createImage("./assets/pacman/pipeHorizontal.png"),
+          height: tileSize,
+          width: tileSize,
         };
       case "+":
         return {
@@ -178,6 +45,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "pipe-cross",
           image: createImage("./assets/pacman/pipeCross.png"),
+          height: tileSize,
+          width: tileSize,
         };
 
       case "^":
@@ -186,6 +55,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "pipe-cross",
           image: createImage("./assets/pacman/capTop.png"),
+          height: tileSize,
+          width: tileSize,
         };
 
       case "_":
@@ -194,6 +65,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "pipe-cross",
           image: createImage("./assets/pacman/capBottom.png"),
+          height: tileSize,
+          width: tileSize,
         };
       case "]":
         return {
@@ -201,6 +74,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "pipe-cross",
           image: createImage("./assets/pacman/capRight.png"),
+          height: tileSize,
+          width: tileSize,
         };
       case "[":
         return {
@@ -208,6 +83,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "pipe-cross",
           image: createImage("./assets/pacman/capLeft.png"),
+          height: tileSize,
+          width: tileSize,
         };
       case "b":
         return {
@@ -215,6 +92,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "pipe-cross",
           image: createImage("./assets/pacman/block.png"),
+          height: tileSize,
+          width: tileSize,
         };
       case "4":
         return {
@@ -222,6 +101,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "lower-left-pipe-corner",
           image: createImage("./assets/pacman/pipeCorner4.png"),
+          height: tileSize,
+          width: tileSize,
         };
       case "3":
         return {
@@ -229,6 +110,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "lower-right-pipe-corner",
           image: createImage("./assets/pacman/pipeCorner3.png"),
+          height: tileSize,
+          width: tileSize,
         };
       case "2":
         return {
@@ -236,6 +119,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "upper-right-pipe-corner",
           image: createImage("./assets/pacman/pipeCorner2.png"),
+          height: tileSize,
+          width: tileSize,
         };
       case "1":
         return {
@@ -243,6 +128,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "upper-left-pipe-corner",
           image: createImage("./assets/pacman/pipeCorner1.png"),
+          height: tileSize,
+          width: tileSize,
         };
       case "5":
         return {
@@ -250,6 +137,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "upper-left-pipe-corner",
           image: createImage("./assets/pacman/pipeConnectorTop.png"),
+          height: tileSize,
+          width: tileSize,
         };
       case "6":
         return {
@@ -257,6 +146,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "upper-left-pipe-corner",
           image: createImage("./assets/pacman/pipeConnectorRight.png"),
+          height: tileSize,
+          width: tileSize,
         };
       case "7":
         return {
@@ -264,6 +155,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "upper-left-pipe-corner",
           image: createImage("./assets/pacman/pipeConnectorBottom.png"),
+          height: tileSize,
+          width: tileSize,
         };
 
       case "8":
@@ -272,6 +165,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "upper-left-pipe-corner",
           image: createImage("./assets/pacman/pipeConnectorLeft.png"),
+          height: tileSize,
+          width: tileSize,
         };
 
       case ".":
@@ -280,6 +175,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           y: rowIndex,
           type: "points-pellet",
           image: createImage("./assets/pacman/pipeConnectorLeft.png"),
+          height: tileSize,
+          width: tileSize,
         };
 
       default:
@@ -290,6 +187,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
       y: rowIndex,
       type: "right-edge",
       image: createImage(""),
+      height: tileSize,
+      width: tileSize,
     };
   });
 });

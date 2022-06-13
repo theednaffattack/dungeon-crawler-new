@@ -9,17 +9,29 @@ export function StateViewer({ state }: StateViewerProps) {
     <div className="state-viewer">
       <h1>STATE VIEWER</h1>
       <p className="state">
-        ArrowDown: {state.keyPressed.ArrowDown.toString()}
-      </p>
-      <p className="state">ArrowUp: {state.keyPressed.ArrowUp.toString()}</p>
-      <p className="state">
-        ArrowLeft: {state.keyPressed.ArrowLeft.toString()}
+        ArrowDown: <span>{state.keyPressed.ArrowDown.toString()}</span>
       </p>
       <p className="state">
-        ArrowRight: {state.keyPressed.ArrowRight.toString()}
+        ArrowUp: <span>{state.keyPressed.ArrowUp.toString()}</span>
       </p>
-      <p className="state">Player X: {state.player.position.x}</p>
-      <p className="state">Player Y: {state.player.position.y}</p>
+      <p className="state">
+        ArrowLeft: <span>{state.keyPressed.ArrowLeft.toString()}</span>
+      </p>
+      <p className="state">
+        ArrowRight: <span> {state.keyPressed.ArrowRight.toString()}</span>
+      </p>
+      <p className="state">
+        Player X: <span>{state.player.position.x}</span>
+      </p>
+      <p className="state">
+        Player Y: <span>{state.player.position.y}</span>
+      </p>
+      <p className="state">
+        Player Velocity X: <span>{state.player.velocity.x}</span>
+      </p>
+      <p className="state">
+        Player Velocity Y: <span>{state.player.velocity.y}</span>
+      </p>
     </div>
   );
 }
