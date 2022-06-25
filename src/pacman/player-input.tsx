@@ -1,8 +1,7 @@
-import { clamp } from "./clamp";
 import { doesCircleCollidesWithRectangle } from "./does-circle-collide-with-rectangle";
 import { Action } from "./pacman-reducer";
 import { tileSize } from "./tile-map";
-import { GameStateInterface, Player } from "./types";
+import { GameStateInterface } from "./types";
 
 const PLAYER_SPEED = 130;
 export function playerInput({
@@ -85,10 +84,6 @@ export function playerInput({
     if (key === "ArrowUp") {
       return {
         ...state,
-        // keyPressed: {
-        //   ...state.keyPressed,
-        //   [key]: action.payload.event === "keydown" ? true : false,
-        // },
         keyPressed: { ...state.keyPressed, [key]: true },
         lastKeyPressed: key,
         player: {
@@ -105,12 +100,6 @@ export function playerInput({
     if (key === "ArrowDown") {
       return {
         ...state,
-        // keyPressed: {
-        //   ArrowUp: false,
-        //   ArrowLeft: false,
-        //   ArrowRight: false,
-        //   [key]: action.payload.event === "keydown" ? true : false,
-        // },
         keyPressed: { ...state.keyPressed, [key]: true },
         lastKeyPressed: key,
         player: {
@@ -122,13 +111,8 @@ export function playerInput({
             right: newXGrid + state.player.radius,
             xGrid: state.player.position.xGrid,
             yGrid: newYGrid,
-            xPixels: state.player.position.xPixels, // state.player.position.xGrid * tileSize + tileSize / 2,
+            xPixels: state.player.position.xPixels,
             yPixels: newYPixels,
-            // clamp(
-            //   newYPixels,
-            //   60,
-            //   tileSize * state.map.length - tileSize - state.player.radius
-            // ), // newY * tileSize + tileSize / 2,
           },
           vector: [vectorX, vectorY],
         },
@@ -137,12 +121,6 @@ export function playerInput({
     if (key === "ArrowLeft") {
       return {
         ...state,
-        // keyPressed: {
-        //   ArrowUp: false,
-        //   ArrowDown: false,
-        //   ArrowRight: false,
-        //   [key]: action.payload.event === "keydown" ? true : false,
-        // },
         keyPressed: { ...state.keyPressed, [key]: true },
         lastKeyPressed: key,
         player: {
@@ -152,15 +130,9 @@ export function playerInput({
             bottom: newXGrid + state.player.radius,
             left: newXGrid - state.player.radius,
             right: newXGrid + state.player.radius,
-            xGrid: newXGrid, // clamp(newXGrid, 1, state.map[0].length - 1),
+            xGrid: newXGrid,
             yGrid: state.player.position.yGrid,
-            // xPixels: newXPixels,
             xPixels: newXPixels,
-            //  clamp(
-            //   newXPixels,
-            //   60,
-            //   (state.map[0].length - 1) * tileSize - (state.player.radius + 2)
-            // ),
             yPixels: state.player.position.yPixels,
           },
           vector: [vectorX, vectorY],
@@ -170,12 +142,6 @@ export function playerInput({
     if (key === "ArrowRight") {
       return {
         ...state,
-        // keyPressed: {
-        //   ArrowUp: false,
-        //   ArrowDown: false,
-        //   ArrowLeft: false,
-        //   [key]: action.payload.event === "keydown" ? true : false,
-        // },
         keyPressed: { ...state.keyPressed, [key]: true },
         lastKeyPressed: key,
         player: {
@@ -188,11 +154,6 @@ export function playerInput({
             xGrid: newXGrid, // clamp(newXGrid, 1, state.map[0].length - 1),
             yGrid: state.player.position.yGrid,
             xPixels: newXPixels,
-            // xPixels: clamp(
-            //   newXPixels,
-            //   60,
-            //   (state.map[0].length - 1) * tileSize - (state.player.radius + 2)
-            // ),
             yPixels: state.player.position.yPixels, // state.player.position.yGrid * tileSize + tileSize / 2,
           },
           vector: [vectorX, vectorY],
