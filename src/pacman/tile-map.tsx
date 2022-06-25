@@ -23,27 +23,36 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
     switch (tile) {
       case "|":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "pipe-cross",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "pipe-vertical",
           image: createImage("./assets/pacman/pipeVertical.png"),
           height: tileSize,
           width: tileSize,
         };
       case "-":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "pipe-cross",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "pipe-horizontal",
           image: createImage("./assets/pacman/pipeHorizontal.png"),
           height: tileSize,
           width: tileSize,
         };
       case "+":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "pipe-cross",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "pipe-cross",
           image: createImage("./assets/pacman/pipeCross.png"),
           height: tileSize,
           width: tileSize,
@@ -51,9 +60,12 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
 
       case "^":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "pipe-cross",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "cap-top",
           image: createImage("./assets/pacman/capTop.png"),
           height: tileSize,
           width: tileSize,
@@ -61,99 +73,132 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
 
       case "_":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "pipe-cross",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "cap-bottom",
           image: createImage("./assets/pacman/capBottom.png"),
           height: tileSize,
           width: tileSize,
         };
       case "]":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "pipe-cross",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "cap-right",
           image: createImage("./assets/pacman/capRight.png"),
           height: tileSize,
           width: tileSize,
         };
       case "[":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "pipe-cross",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "cap-left",
           image: createImage("./assets/pacman/capLeft.png"),
           height: tileSize,
           width: tileSize,
         };
       case "b":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "pipe-cross",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "block",
           image: createImage("./assets/pacman/block.png"),
           height: tileSize,
           width: tileSize,
         };
       case "4":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "lower-left-pipe-corner",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "lower-left-pipe-corner",
           image: createImage("./assets/pacman/pipeCorner4.png"),
           height: tileSize,
           width: tileSize,
         };
       case "3":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "lower-right-pipe-corner",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "lower-right-pipe-corner",
           image: createImage("./assets/pacman/pipeCorner3.png"),
           height: tileSize,
           width: tileSize,
         };
       case "2":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "upper-right-pipe-corner",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "upper-right-pipe-corner",
           image: createImage("./assets/pacman/pipeCorner2.png"),
           height: tileSize,
           width: tileSize,
         };
       case "1":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "upper-left-pipe-corner",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "upper-left-pipe-corner",
           image: createImage("./assets/pacman/pipeCorner1.png"),
           height: tileSize,
           width: tileSize,
         };
       case "5":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "upper-left-pipe-corner",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "pipe-connector-top",
           image: createImage("./assets/pacman/pipeConnectorTop.png"),
           height: tileSize,
           width: tileSize,
         };
       case "6":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "upper-left-pipe-corner",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "pipe-connector-right",
           image: createImage("./assets/pacman/pipeConnectorRight.png"),
           height: tileSize,
           width: tileSize,
         };
       case "7":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "upper-left-pipe-corner",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "pipe-connector-bottom",
           image: createImage("./assets/pacman/pipeConnectorBottom.png"),
           height: tileSize,
           width: tileSize,
@@ -161,9 +206,12 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
 
       case "8":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "upper-left-pipe-corner",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "barrier",
+          description: "pipe-connector-left",
           image: createImage("./assets/pacman/pipeConnectorLeft.png"),
           height: tileSize,
           width: tileSize,
@@ -171,9 +219,12 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
 
       case ".":
         return {
-          x: cellIndex,
-          y: rowIndex,
-          type: "points-pellet",
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize,
+          yPixels: rowIndex * tileSize,
+          type: "pickup",
+          description: "points-pellet",
           image: createImage("./assets/pacman/pipeConnectorLeft.png"),
           height: tileSize,
           width: tileSize,
@@ -183,9 +234,12 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
         break;
     }
     return {
-      x: cellIndex,
-      y: rowIndex,
-      type: "right-edge",
+      xGrid: cellIndex,
+      yGrid: rowIndex,
+      xPixels: cellIndex * tileSize,
+      yPixels: rowIndex * tileSize,
+      type: "barrier",
+      description: "right-edge",
       image: createImage(""),
       height: tileSize,
       width: tileSize,
