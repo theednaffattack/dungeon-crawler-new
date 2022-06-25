@@ -1,10 +1,24 @@
 import { Action } from "./pacman-reducer";
+import { GameStateInterface } from "./types";
 
 export function handleKeydown(
   { key }: KeyboardEvent,
   dispatch: React.Dispatch<Action>,
   deltaTime: number
 ) {
+  const watchedKeys: GameStateInterface["lastKeyPressed"][] = [
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+  ];
+
+  // If we see a keydown event from anything other than our
+  // special keys above we return.
+  if (!watchedKeys.some((specialKey) => specialKey === key)) {
+    return;
+  }
+
   let vectorX = 0;
   let vectorY = 0;
   if (key === "ArrowDown") {
@@ -19,8 +33,14 @@ export function handleKeydown(
   if (key === "ArrowRight") {
     vectorX = 1;
   }
+
   dispatch({
     type: "movePlayer",
-    payload: { key, event: "keydown", vector: [vectorX, vectorY], deltaTime },
+    payload: {
+      key: key as GameStateInterface["lastKeyPressed"],
+      event: "keydown",
+      vector: [vectorX, vectorY],
+      deltaTime,
+    },
   });
 }

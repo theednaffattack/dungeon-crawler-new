@@ -1,4 +1,3 @@
-import { tileSize } from "./tile-map";
 import { GameStateInterface } from "./types";
 
 export function drawPlayer(
@@ -6,26 +5,12 @@ export function drawPlayer(
   state: GameStateInterface,
   deltaTime: number
 ) {
-  let vectorX = 0;
-  let vectorY = 0;
-  if (state.keyPressed.ArrowLeft) {
-    vectorX = -1;
-  }
-  if (state.keyPressed.ArrowRight) {
-    vectorX = 1;
-  }
-  if (state.keyPressed.ArrowUp) {
-    vectorY = -1;
-  }
-  if (state.keyPressed.ArrowDown) {
-    vectorY = 1;
-  }
-
   context.beginPath();
+  console.log("DRAW PLAYER FUNC - DELTA TIME", deltaTime);
 
   context.arc(
-    state.player.position.x * tileSize + tileSize / 2,
-    state.player.position.y * tileSize + tileSize / 2,
+    state.player.position.xPixels, // * tileSize + tileSize / 2,
+    state.player.position.yPixels, // * tileSize + tileSize / 2,
     state.player.radius,
     0,
     Math.PI * 2
