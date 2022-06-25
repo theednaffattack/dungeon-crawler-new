@@ -1,6 +1,24 @@
+type VectorXType = number;
+type VectorYType = number;
+
+interface FullPositionDescription {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+}
+
+interface PlayerPosition extends FullPositionDescription {
+  xGrid: number;
+  yGrid: number;
+  xPixels: number;
+  yPixels: number;
+}
 export interface Player {
-  position: { x: number; y: number };
+  position: PlayerPosition;
   radius: number;
+  speed: number;
+  vector: [VectorXType, VectorYType];
   velocity: { x: number; y: number };
 }
 
@@ -11,32 +29,49 @@ export interface GameStateInterface {
     ArrowLeft: boolean;
     ArrowRight: boolean;
   };
+  lastKeyPressed: keyof GameStateInterface["keyPressed"];
   map: Tile[][];
   player: Player;
 }
 
 export interface Tile {
-  x: number;
-  y: number;
+  xGrid: number;
+  yGrid: number;
+  xPixels: number;
+  yPixels: number;
   type: TileType;
+  description: TileDescription;
   image: HTMLImageElement;
   height: number;
   width: number;
 }
 
-type TileType =
+type TileType = "barrier" | "pickup" | "portal" | "enemy";
+
+type TileDescription =
+  | "block"
   | "left-corner"
+  | "pipe-connector-top"
+  | "pipe-connector-right"
+  | "pipe-connector-bottom"
+  | "pipe-connector-left"
   | "pipe-horizontal"
-  | "right-corner"
-  | "left-edge"
-  | "right-edge"
+  | "pipe-vertical"
   | "pipe-cross"
-  | "points-pellet"
   | "lower-left-pipe-corner"
   | "lower-right-pipe-corner"
   | "upper-left-pipe-corner"
   | "upper-right-pipe-corner"
-  | "pellet";
+  | "right-corner"
+  | "left-edge"
+  | "right-edge"
+  | "cap-top"
+  | "cap-bottom"
+  | "cap-right"
+  | "cap-left"
+  | "points-pellet"
+  | "pellet"
+  | "";
 
 export type GameMapEntities = (
   | "-"
