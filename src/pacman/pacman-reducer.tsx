@@ -8,9 +8,9 @@ export type Action =
       type: "movePlayer";
       payload: {
         event: "keydown" | "keyup";
-        key: string;
-        vector?: [number, number];
-        deltaTime?: number;
+        key: keyof GameStateInterface["keyPressed"];
+        vector: [number, number];
+        deltaTime: number;
       };
     };
 
