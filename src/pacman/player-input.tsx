@@ -1,10 +1,10 @@
 import { clamp } from "./clamp";
-import { circleCollidesWithRectangle } from "./does-circle-collide-with-rectangle";
+import { doesCircleCollidesWithRectangle } from "./does-circle-collide-with-rectangle";
 import { Action } from "./pacman-reducer";
 import { tileSize } from "./tile-map";
-import { GameStateInterface } from "./types";
+import { GameStateInterface, Player } from "./types";
 
-const PLAYER_SPEED = 15;
+const PLAYER_SPEED = 130;
 export function playerInput({
   state,
   action,
@@ -12,99 +12,194 @@ export function playerInput({
   state: GameStateInterface;
   action: Action;
 }): GameStateInterface {
-  if ("key" in action.payload) {
-    if (!action.payload.deltaTime || !action.payload.vector) {
-      return { ...state };
-    }
-    if (action.payload.key === "ArrowUp") {
-      const nextYPos = Math.round(clamp(state.player.position.y - 1, 0, 12));
+  if ("event" in action.payload) {
+    const [vectorX, vectorY] = action.payload.vector;
 
-      const destination = state.map[nextYPos][state.player.position.x + 0];
-      console.log("VIEW DESTINATION", {
-        yCoord: nextYPos,
-        xCoord: state.player.position.x + 0,
-        destination,
-      });
+    const { key } = action.payload;
+
+    const frameTransform = 0.01;
+    if (action.payload.event === "keyup") {
+      state.keyPressed[key];
       return {
         ...state,
-        keyPressed: {
-          ArrowDown: false,
-          ArrowLeft: false,
-          ArrowRight: false,
-          [action.payload.key]:
-            action.payload.event === "keydown" ? true : false,
-        },
+        keyPressed: { ...state.keyPressed, [key]: false },
         player: {
           ...state.player,
-          position: {
-            x: state.player.position.x,
-            y: state.player.position.y - PLAYER_SPEED / tileSize,
-          },
+          vector: [action.payload.vector[0], action.payload.vector[1]],
         },
       };
     }
-    if (action.payload.key === "ArrowDown") {
-      state.keyPressed[action.payload.key];
+
+    const barriers = state.map.map((row) => {
+      return row.filter((cell) => cell.type === "barrier");
+    });
+
+    const velocity =
+      state.player.speed * frameTransform * action.payload.deltaTime;
+
+    const newXPixels = state.player.position.xPixels + 1 * velocity * vectorX;
+
+    const newYPixels = state.player.position.yPixels + 1 * velocity * vectorY;
+
+    const newYGrid =
+      state.player.position.yGrid +
+      ((PLAYER_SPEED * action.payload.deltaTime * frameTransform) / tileSize) *
+        vectorY;
+
+    const newXGrid =
+      state.player.position.xGrid +
+      ((PLAYER_SPEED * action.payload.deltaTime * frameTransform) / tileSize) *
+        vectorX;
+
+    // Collision detection
+    for (const row of barriers) {
+      for (const cell of row) {
+        if (
+          doesCircleCollidesWithRectangle({
+            rectangle: cell,
+            circle: {
+              ...state.player,
+              position: {
+                ...state.player.position,
+                xPixels: newXPixels,
+                yPixels: newYPixels,
+              },
+            },
+            vector: [vectorX, vectorY],
+          })
+        ) {
+          return {
+            ...state,
+            lastKeyPressed: key as keyof GameStateInterface["keyPressed"],
+            keyPressed: { ...state.keyPressed, [key]: true },
+            player: {
+              ...state.player,
+              position: { ...state.player.position },
+              vector: [vectorX, vectorY],
+            },
+          };
+        }
+      }
+    }
+
+    if (key === "ArrowUp") {
       return {
         ...state,
-        keyPressed: {
-          ArrowUp: false,
-          ArrowLeft: false,
-          ArrowRight: false,
-          [action.payload.key]:
-            action.payload.event === "keydown" ? true : false,
-        },
+        // keyPressed: {
+        //   ...state.keyPressed,
+        //   [key]: action.payload.event === "keydown" ? true : false,
+        // },
+        keyPressed: { ...state.keyPressed, [key]: true },
+        lastKeyPressed: key,
         player: {
           ...state.player,
           position: {
-            x: state.player.position.x,
-            y: state.player.position.y + PLAYER_SPEED / tileSize,
+            ...state.player.position,
+            yGrid: newYGrid,
+            yPixels: newYPixels,
           },
+          vector: [vectorX, vectorY],
         },
       };
     }
-    if (action.payload.key === "ArrowLeft") {
-      state.keyPressed[action.payload.key];
-
+    if (key === "ArrowDown") {
       return {
         ...state,
-        keyPressed: {
-          ArrowUp: false,
-          ArrowDown: false,
-          ArrowRight: false,
-          [action.payload.key]:
-            action.payload.event === "keydown" ? true : false,
-        },
+        // keyPressed: {
+        //   ArrowUp: false,
+        //   ArrowLeft: false,
+        //   ArrowRight: false,
+        //   [key]: action.payload.event === "keydown" ? true : false,
+        // },
+        keyPressed: { ...state.keyPressed, [key]: true },
+        lastKeyPressed: key,
         player: {
           ...state.player,
           position: {
-            x: state.player.position.x - PLAYER_SPEED / tileSize,
-            y: state.player.position.y,
+            top: newYPixels - state.player.radius,
+            bottom: newYPixels + state.player.radius,
+            left: newXGrid - state.player.radius,
+            right: newXGrid + state.player.radius,
+            xGrid: state.player.position.xGrid,
+            yGrid: newYGrid,
+            xPixels: state.player.position.xPixels, // state.player.position.xGrid * tileSize + tileSize / 2,
+            yPixels: newYPixels,
+            // clamp(
+            //   newYPixels,
+            //   60,
+            //   tileSize * state.map.length - tileSize - state.player.radius
+            // ), // newY * tileSize + tileSize / 2,
           },
+          vector: [vectorX, vectorY],
         },
       };
     }
-    if (action.payload.key === "ArrowRight") {
-      state.keyPressed[action.payload.key];
-
+    if (key === "ArrowLeft") {
       return {
         ...state,
-        keyPressed: {
-          ArrowUp: false,
-          ArrowDown: false,
-          ArrowLeft: false,
-          [action.payload.key]:
-            action.payload.event === "keydown" ? true : false,
-        },
+        // keyPressed: {
+        //   ArrowUp: false,
+        //   ArrowDown: false,
+        //   ArrowRight: false,
+        //   [key]: action.payload.event === "keydown" ? true : false,
+        // },
+        keyPressed: { ...state.keyPressed, [key]: true },
+        lastKeyPressed: key,
         player: {
           ...state.player,
           position: {
-            x: state.player.position.x + PLAYER_SPEED / tileSize,
-            y: state.player.position.y,
+            top: newXGrid - state.player.radius,
+            bottom: newXGrid + state.player.radius,
+            left: newXGrid - state.player.radius,
+            right: newXGrid + state.player.radius,
+            xGrid: newXGrid, // clamp(newXGrid, 1, state.map[0].length - 1),
+            yGrid: state.player.position.yGrid,
+            // xPixels: newXPixels,
+            xPixels: newXPixels,
+            //  clamp(
+            //   newXPixels,
+            //   60,
+            //   (state.map[0].length - 1) * tileSize - (state.player.radius + 2)
+            // ),
+            yPixels: state.player.position.yPixels,
           },
+          vector: [vectorX, vectorY],
+        },
+      };
+    }
+    if (key === "ArrowRight") {
+      return {
+        ...state,
+        // keyPressed: {
+        //   ArrowUp: false,
+        //   ArrowDown: false,
+        //   ArrowLeft: false,
+        //   [key]: action.payload.event === "keydown" ? true : false,
+        // },
+        keyPressed: { ...state.keyPressed, [key]: true },
+        lastKeyPressed: key,
+        player: {
+          ...state.player,
+          position: {
+            top: newXGrid - state.player.radius,
+            bottom: newXGrid + state.player.radius,
+            left: newXGrid - state.player.radius,
+            right: newXGrid + state.player.radius,
+            xGrid: newXGrid, // clamp(newXGrid, 1, state.map[0].length - 1),
+            yGrid: state.player.position.yGrid,
+            xPixels: newXPixels,
+            // xPixels: clamp(
+            //   newXPixels,
+            //   60,
+            //   (state.map[0].length - 1) * tileSize - (state.player.radius + 2)
+            // ),
+            yPixels: state.player.position.yPixels, // state.player.position.yGrid * tileSize + tileSize / 2,
+          },
+          vector: [vectorX, vectorY],
         },
       };
     }
   }
+
   return { ...state };
 }
