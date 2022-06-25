@@ -13,6 +13,7 @@
 
 .state {
   font-size: large;
+  margin: 0;
 }
 
 .state span {
@@ -22,4 +23,5 @@
 
 .state-viewer {
   padding: 12px;
+  min-width: 300px;
 }
