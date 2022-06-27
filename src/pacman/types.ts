@@ -41,12 +41,13 @@ export interface Tile {
   yPixels: number;
   type: TileType;
   description: TileDescription;
+  radius?: number;
   image: HTMLImageElement;
   height: number;
   width: number;
 }
 
-type TileType = "barrier" | "pickup" | "portal" | "enemy";
+type TileType = "barrier" | "pickup" | "portal" | "enemy" | "blank";
 
 type TileDescription =
   | "block"
@@ -92,4 +93,5 @@ export type GameMapEntities = (
   | "p"
   | "_"
   | "^"
+  | ""
 )[];

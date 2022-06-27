@@ -33,6 +33,12 @@ export function playerInput({
       return row.filter((cell) => cell.type === "barrier");
     });
 
+    const pellets = state.map.map((row) => {
+      return row.filter(
+        (cell) => cell.type === "pickup" && cell.description === "points-pellet"
+      );
+    });
+
     const velocity =
       state.player.speed * frameTransform * action.payload.deltaTime;
 
@@ -40,17 +46,17 @@ export function playerInput({
 
     const newYPixels = state.player.position.yPixels + 1 * velocity * vectorY;
 
-    const newYGrid =
-      state.player.position.yGrid +
-      ((PLAYER_SPEED * action.payload.deltaTime * frameTransform) / tileSize) *
-        vectorY;
+    const newYGrid = Math.floor(
+      (state.player.position.yPixels + 1 * vectorY * velocity) / tileSize
+    );
 
-    const newXGrid =
-      state.player.position.xGrid +
-      ((PLAYER_SPEED * action.payload.deltaTime * frameTransform) / tileSize) *
-        vectorX;
+    const newXGrid = Math.floor(
+      (state.player.position.xPixels + 1 * vectorX * velocity) / tileSize
+    );
 
-    // Collision detection
+    const destination = state.map[newYGrid][newXGrid];
+
+    // Collision detection - barriers
     for (const row of barriers) {
       for (const cell of row) {
         if (
@@ -81,9 +87,31 @@ export function playerInput({
       }
     }
 
+    const pelletRadius = 3;
+
+    const clonedMap = [...state.map];
+
+    if (destination.type === "pickup") {
+      if (
+        Math.hypot(
+          destination.xPixels - state.player.position.xPixels,
+          destination.yPixels - state.player.position.yPixels
+        ) <
+        pelletRadius + state.player.radius
+      ) {
+        clonedMap[destination.yGrid][destination.xGrid] = {
+          ...destination,
+          type: "blank",
+          description: "",
+        };
+      }
+    }
+
+    // Key Handling
     if (key === "ArrowUp") {
       return {
         ...state,
+        map: [...clonedMap],
         keyPressed: { ...state.keyPressed, [key]: true },
         lastKeyPressed: key,
         player: {
@@ -102,6 +130,7 @@ export function playerInput({
         ...state,
         keyPressed: { ...state.keyPressed, [key]: true },
         lastKeyPressed: key,
+        map: [...clonedMap],
         player: {
           ...state.player,
           position: {
@@ -123,6 +152,7 @@ export function playerInput({
         ...state,
         keyPressed: { ...state.keyPressed, [key]: true },
         lastKeyPressed: key,
+        map: [...clonedMap],
         player: {
           ...state.player,
           position: {
@@ -144,6 +174,7 @@ export function playerInput({
         ...state,
         keyPressed: { ...state.keyPressed, [key]: true },
         lastKeyPressed: key,
+        map: [...clonedMap],
         player: {
           ...state.player,
           position: {

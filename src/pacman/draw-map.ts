@@ -1,15 +1,24 @@
-import { tileMap, tileSize } from "./tile-map";
+import { tileSize } from "./tile-map";
+import { GameStateInterface } from "./types";
+interface DrawMapProps {
+  context: CanvasRenderingContext2D;
+  state: GameStateInterface;
+}
 
-export function drawMap(context: CanvasRenderingContext2D) {
+export function drawMap({ context, state }: DrawMapProps) {
   context.clearRect(0, 0, context.canvas.width, context.canvas.height);
   // Step 1: Fill the entire canvas with black BEFORE drawing
   context.fillStyle = "black";
   context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
   // Step 2: Draw our game map
-  for (let rowIndex = 0; rowIndex < tileMap.length; rowIndex++) {
-    for (let cellIndex = 0; cellIndex < tileMap[rowIndex].length; cellIndex++) {
-      const element = tileMap[rowIndex][cellIndex];
+  for (let rowIndex = 0; rowIndex < state.map.length; rowIndex++) {
+    for (
+      let cellIndex = 0;
+      cellIndex < state.map[rowIndex].length;
+      cellIndex++
+    ) {
+      const element = state.map[rowIndex][cellIndex];
       //
       if (element.description === "") {
         break;
@@ -27,14 +36,13 @@ export function drawMap(context: CanvasRenderingContext2D) {
         context.fillStyle = "white";
         context.fill();
         context.closePath();
-      } else {
-        // ...continue drawing the map blocks
-        context.drawImage(
-          element.image,
-          element.xGrid * tileSize,
-          element.yGrid * tileSize
-        );
       }
+      // ...continue drawing the map blocks
+      context.drawImage(
+        element.image,
+        element.xGrid * tileSize,
+        element.yGrid * tileSize
+      );
     }
   }
 

@@ -221,8 +221,8 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
         return {
           xGrid: cellIndex,
           yGrid: rowIndex,
-          xPixels: cellIndex * tileSize,
-          yPixels: rowIndex * tileSize,
+          xPixels: cellIndex * tileSize + tileSize / 2,
+          yPixels: rowIndex * tileSize + tileSize / 2,
           type: "pickup",
           description: "points-pellet",
           image: createImage("./assets/pacman/pipeConnectorLeft.png"),
@@ -230,6 +230,18 @@ export const tileMap: Tile[][] = gameMap.map((row, rowIndex) => {
           width: tileSize,
         };
 
+      case "":
+        return {
+          xGrid: cellIndex,
+          yGrid: rowIndex,
+          xPixels: cellIndex * tileSize + tileSize / 2,
+          yPixels: rowIndex * tileSize + tileSize / 2,
+          type: "blank",
+          description: "",
+          image: createImage(""),
+          height: tileSize,
+          width: tileSize,
+        };
       default:
         break;
     }
