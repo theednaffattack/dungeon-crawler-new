@@ -3,7 +3,6 @@ import { Action } from "./pacman-reducer";
 import { tileSize } from "./tile-map";
 import { GameStateInterface } from "./types";
 
-const PLAYER_SPEED = 130;
 export function playerInput({
   state,
   action,
@@ -33,12 +32,6 @@ export function playerInput({
       return row.filter((cell) => cell.type === "barrier");
     });
 
-    const pellets = state.map.map((row) => {
-      return row.filter(
-        (cell) => cell.type === "pickup" && cell.description === "points-pellet"
-      );
-    });
-
     const velocity =
       state.player.speed * frameTransform * action.payload.deltaTime;
 
@@ -53,8 +46,6 @@ export function playerInput({
     const newXGrid = Math.floor(
       (state.player.position.xPixels + 1 * vectorX * velocity) / tileSize
     );
-
-    const destination = state.map[newYGrid][newXGrid];
 
     // Collision detection - barriers
     for (const row of barriers) {
@@ -89,7 +80,10 @@ export function playerInput({
 
     const pelletRadius = 3;
 
+    const destination = state.map[newYGrid][newXGrid];
+
     const clonedMap = [...state.map];
+    let addToScore = 0;
 
     if (destination.type === "pickup") {
       if (
@@ -99,6 +93,8 @@ export function playerInput({
         ) <
         pelletRadius + state.player.radius
       ) {
+        // increment score on pickup
+        addToScore = ++state.player.score;
         clonedMap[destination.yGrid][destination.xGrid] = {
           ...destination,
           type: "blank",
@@ -121,6 +117,7 @@ export function playerInput({
             yGrid: newYGrid,
             yPixels: newYPixels,
           },
+          score: state.player.score + addToScore,
           vector: [vectorX, vectorY],
         },
       };
@@ -143,6 +140,7 @@ export function playerInput({
             xPixels: state.player.position.xPixels,
             yPixels: newYPixels,
           },
+          score: state.player.score + addToScore,
           vector: [vectorX, vectorY],
         },
       };
@@ -165,6 +163,7 @@ export function playerInput({
             xPixels: newXPixels,
             yPixels: state.player.position.yPixels,
           },
+          score: state.player.score + addToScore,
           vector: [vectorX, vectorY],
         },
       };
@@ -187,6 +186,7 @@ export function playerInput({
             xPixels: newXPixels,
             yPixels: state.player.position.yPixels, // state.player.position.yGrid * tileSize + tileSize / 2,
           },
+          score: state.player.score + addToScore,
           vector: [vectorX, vectorY],
         },
       };
