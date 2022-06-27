@@ -85,41 +85,42 @@ export function Canvas(props: any) {
     context.fill();
     context.closePath();
   }
+  interface DrawMapProps {
+    context: CanvasRenderingContext2D;
+    state: GameStateInterface;
+  }
 
-  function drawMap(context: CanvasRenderingContext2D) {
+  function drawMap({ context, state }: DrawMapProps) {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     // Step 1: Fill the entire canvas with black BEFORE drawing
+    // anything else.
     context.fillStyle = "black";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
     // Step 2: Draw our game map
-    for (let rowIndex = 0; rowIndex < tileMap.length; rowIndex++) {
+    for (let rowIndex = 0; rowIndex < state.map.length; rowIndex++) {
       for (
         let cellIndex = 0;
-        cellIndex < tileMap[rowIndex].length;
+        cellIndex < state.map[rowIndex].length;
         cellIndex++
       ) {
-        const element = tileMap[rowIndex][cellIndex];
-        // If it's a regular pellet draw it here, otherwise...
-        if (element.description === "points-pellet") {
+        const element = state.map[rowIndex][cellIndex];
+
+        if (element.type === "blank") {
+          continue;
+        }
+        // If it's a regular pellet draw it here
+        if (element.type === "pickup") {
           context.beginPath();
-          context.arc(
-            element.xGrid * tileSize + tileSize / 2,
-            element.yGrid * tileSize + tileSize / 2,
-            3,
-            0,
-            Math.PI * 2
-          );
+          context.arc(element.xPixels, element.yPixels, 3, 0, Math.PI * 2);
           context.fillStyle = "white";
           context.fill();
           context.closePath();
-        } else {
-          // ...continue drawing the map blocks
-          context.drawImage(
-            element.image,
-            element.xGrid * tileSize,
-            element.yGrid * tileSize
-          );
+        }
+
+        // draw all map barriers
+        if (element.type === "barrier") {
+          context.drawImage(element.image, element.xPixels, element.yPixels);
         }
       }
     }
@@ -130,19 +131,73 @@ export function Canvas(props: any) {
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas?.getContext("2d");
-    let frameCount = 0;
     let animationFrameId: number;
 
-    //Our draw came here
+    // Draw all Game Elements
     function render(time?: number) {
       if (context != null && time) {
         const calcDeltaTime = time && time - previousTimeRef.current;
         setDeltaTime(calcDeltaTime);
-        // frameCount++;
         previousTimeRef.current = time;
-        drawMap(context);
-        drawPlayer(context, state, calcDeltaTime);
-        // draw(context, deltaTime / 1000);
+
+        // BEG Draw Map
+
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        // Step 1: Fill the entire canvas with black BEFORE drawing
+        // anything else.
+        context.fillStyle = "black";
+        context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+
+        // Step 2: Draw our game map
+        for (let rowIndex = 0; rowIndex < state.map.length; rowIndex++) {
+          for (
+            let cellIndex = 0;
+            cellIndex < state.map[rowIndex].length;
+            cellIndex++
+          ) {
+            const element = state.map[rowIndex][cellIndex];
+
+            if (element.type === "blank") {
+              continue;
+            }
+            // If it's a regular pellet draw it here
+            if (element.type === "pickup") {
+              context.beginPath();
+              context.arc(element.xPixels, element.yPixels, 3, 0, Math.PI * 2);
+              context.fillStyle = "white";
+              context.fill();
+              context.closePath();
+            }
+
+            // draw all map barriers
+            if (element.type === "barrier") {
+              context.drawImage(
+                element.image,
+                element.xPixels,
+                element.yPixels
+              );
+            }
+          }
+        }
+
+        context.fill();
+        // END Draw Map
+
+        // BEG Draw Player
+
+        context.beginPath();
+
+        context.arc(
+          state.player.position.xPixels, // * tileSize + tileSize / 2,
+          state.player.position.yPixels, // * tileSize + tileSize / 2,
+          state.player.radius,
+          0,
+          Math.PI * 2
+        );
+        context.fillStyle = "yellow";
+        context.fill();
+        context.closePath();
+        // END Draw Player
       }
       animationFrameId = window.requestAnimationFrame(render);
     }
@@ -153,13 +208,12 @@ export function Canvas(props: any) {
     return () => {
       window.cancelAnimationFrame(animationFrameId);
     };
-  }, [drawMap, drawPlayer]);
+  }, [state.player.position.xPixels, state.player.position.yPixels]);
 
   return (
     <div className="pacman-wrap">
       <Nav />
       <h1>PACMAN</h1>
-
       <div className="pacman-container">
         <canvas
           onBlur={() => {
@@ -175,8 +229,8 @@ export function Canvas(props: any) {
             }, 500);
           }}
           tabIndex={0}
-          height={600}
-          width={600}
+          height={state.map.length * tileSize}
+          width={state.map[0].length * tileSize}
           ref={canvasRef}
           {...props}
         />
