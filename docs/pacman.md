@@ -4,7 +4,7 @@ Built with React
 
 TODOS:
 
-- [ ] Add score
+- [x] Add score
 - [ ] Add enemies
 - [ ] Create powerup
 - [ ] Add win condition
