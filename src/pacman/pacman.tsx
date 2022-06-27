@@ -26,9 +26,9 @@ export const initialState: GameStateInterface = {
       right: initialGridPosition.x * tileSize + tileSize / 2 + radius,
     },
     radius: radius,
+    score: 0,
     speed: 30,
     vector: [0, 0],
-    velocity: { x: 0, y: 0 },
   },
   lastKeyPressed: "ArrowDown",
   keyPressed: {
@@ -214,6 +214,7 @@ export function Canvas(props: any) {
     <div className="pacman-wrap">
       <Nav />
       <h1>PACMAN</h1>
+      <Score score={state.player.score} />
       <div className="pacman-container">
         <canvas
           onBlur={() => {
@@ -242,3 +243,14 @@ export function Canvas(props: any) {
 }
 
 export default Canvas;
+
+function Score({ score }: { score: number }) {
+  return (
+    <div className="score">
+      <p>
+        <span>Score: </span>
+        <span>{score}</span>
+      </p>
+    </div>
+  );
+}

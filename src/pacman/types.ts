@@ -17,9 +17,9 @@ interface PlayerPosition extends FullPositionDescription {
 export interface Player {
   position: PlayerPosition;
   radius: number;
+  score: number;
   speed: number;
   vector: [VectorXType, VectorYType];
-  velocity: { x: number; y: number };
 }
 
 export interface GameStateInterface {
