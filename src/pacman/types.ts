@@ -8,12 +8,14 @@ interface FullPositionDescription {
   left: number;
 }
 
-interface PlayerPosition extends FullPositionDescription {
+interface EntityPosition {
   xGrid: number;
   yGrid: number;
   xPixels: number;
   yPixels: number;
 }
+
+interface PlayerPosition extends EntityPosition, FullPositionDescription {}
 export interface Player {
   position: PlayerPosition;
   radius: number;
@@ -22,7 +24,16 @@ export interface Player {
   vector: [VectorXType, VectorYType];
 }
 
+export interface Enemy {
+  color: "pink" | "green" | "blue" | "orange" | "red";
+  position: EntityPosition;
+  radius: number;
+  speed: number;
+  vector: [VectorXType, VectorYType];
+}
+
 export interface GameStateInterface {
+  enemies: Enemy[];
   keyPressed: {
     ArrowUp: boolean;
     ArrowDown: boolean;
