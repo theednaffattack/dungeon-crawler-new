@@ -4,6 +4,7 @@ import { useEventListener } from "../hooks.use-event-listener";
 import { handleKeydown } from "./handle-keydown";
 import { handleKeyup } from "./handle-keyup";
 import { pacmanReducer } from "./pacman-reducer";
+import { spawnEnemies } from "./spawn-enemies";
 import { StateViewer } from "./state-viewer";
 import "./style.css";
 import { tileMap, tileSize } from "./tile-map";
@@ -12,7 +13,10 @@ import { GameStateInterface } from "./types";
 const initialGridPosition = { x: 1, y: 1 };
 const radius = 15;
 
+const enemies = spawnEnemies({ num: 5 });
+
 export const initialState: GameStateInterface = {
+  enemies: "length" in enemies ? enemies : [enemies],
   map: tileMap,
   player: {
     position: {
@@ -198,6 +202,23 @@ export function Canvas(props: any) {
         context.fill();
         context.closePath();
         // END Draw Player
+
+        // BEG Draw Enemies
+        state.enemies.forEach((_, enemyIndex) => {
+          context.beginPath();
+
+          context.arc(
+            state.enemies[enemyIndex].position.xPixels, // * tileSize + tileSize / 2,
+            state.enemies[enemyIndex].position.yPixels, // * tileSize + tileSize / 2,
+            state.enemies[enemyIndex].radius,
+            0,
+            Math.PI * 2
+          );
+          context.fillStyle = state.enemies[enemyIndex].color;
+          context.fill();
+          context.closePath();
+        });
+        // END Draw Enemies
       }
       animationFrameId = window.requestAnimationFrame(render);
     }
